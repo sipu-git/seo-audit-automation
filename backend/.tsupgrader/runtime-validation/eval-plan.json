@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-11-11T06:35:00Z",
+  "generatedOnPlatform": "win32",
+  "projectType": "server",
+  "assertions": [
+    {
+      "name": "backend-typecheck",
+      "kind": "process",
+      "command": "npm",
+      "args": [
+        "run",
+        "typecheck"
+      ],
+      "verificationMethod": "exit-code",
+      "expected": "0",
+      "timeoutSeconds": 180
+    },
+    {
+      "name": "backend-tests",
+      "kind": "process",
+      "command": "npm",
+      "args": [
+        "test"
+      ],
+      "verificationMethod": "test-results",
+      "expected": "0",
+      "timeoutSeconds": 300
+    },
+    {
+      "name": "health-endpoint",
+      "kind": "http-probe",
+      "startCommand": "npm",
+      "startArgs": [
+        "run",
+        "api"
+      ],
+      "url": "http://localhost:4000/health",
+      "verificationMethod": "http-status",
+      "expected": "200",
+      "timeoutSeconds": 120
+    }
+  ]
+}

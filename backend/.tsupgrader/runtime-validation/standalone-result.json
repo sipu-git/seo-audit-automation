@@ -1,0 +1,133 @@
+{
+  "planHash": "a4b33aee5fdf746385cce4457436e0fec5335480e207bfedc62b00399523c7a0",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-11T06:49:40.1426449Z",
+  "retryCount": 3,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 0,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "backend-typecheck",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": false,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 2,
+        "outputSample": "npm warn Unknown env config \u0022scripts-prepend-node-path\u0022. This will stop working in the next major version of npm. See \u0060npm help npmrc\u0060 for supported config options.\r\n\r\n\u003E crawlix-backend@1.0.0 typecheck\r\n\u003E tsc --noEmit -p tsconfig.json\r\n\r\ntsconfig.json(13,27): error TS5103: Invalid value for \u0027--ignoreDeprecations\u0027.\r\n",
+        "durationMs": 15533
+      },
+      {
+        "name": "backend-tests",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "npm warn Unknown env config \u0022scripts-prepend-node-path\u0022. This will stop working in the next major version of npm. See \u0060npm help npmrc\u0060 for supported config options.\r\n\r\n\u003E crawlix-backend@1.0.0 test\r\n\u003E vitest run\r\n\r\n\r\n\u001B[1m\u001B[46m RUN \u001B[49m\u001B[22m \u001B[36mv3.2.7 \u001B[39m\u001B[90mC:/interview assignments/seo-audit-dashboard/backend\u001B[39m\r\n\r\n \u001B[32m\u2713\u001B[39m src/modules/audits/validations/audit-input.validation.test.ts \u001B[2m(\u001B[22m\u001B[2m2 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 14\u001B[2mms\u001B[22m\u001B[39m\r\n\r\n\u001B[2m Test Files \u001B[22m \u001B[1m\u001B[32m1 passed\u001B[39m\u001B[22m\u001B[90m (1)\u001B[39m\r\n\u001B[2m      Tests \u001B[22m \u001B[1m\u001B[32m2 passed\u001B[39m\u001B[22m\u001B[90m (2)\u001B[39m\r\n\u001B[2m   Start at \u001B[22m 12:19:27\r\n\u001B[2m   Duration \u001B[22m 2.40s\u001B[2m (transform 733ms, setup 0ms, collect 681ms, tests 14ms, environment 1ms, prepare 799ms)\u001B[22m\r\n\r\n",
+        "durationMs": 7602,
+        "testResults": {
+          "testFramework": "vitest",
+          "runnerDetectedFrom": "package_json",
+          "testsTotal": 2,
+          "testsPassed": 2,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": false
+        }
+      },
+      {
+        "name": "health-endpoint",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": false,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 1,
+        "outputSample": "server exited before responding (exit=1)\n--- server output ---\nnpm warn Unknown env config \u0022scripts-prepend-node-path\u0022. This will stop working in the next major version of npm. See \u0060npm help npmrc\u0060 for supported config options.\r\n\r\n\u003E crawlix-backend@1.0.0 api\r\n\u003E tsx index.ts\r\n\r\nnode:internal/modules/cjs/loader:1365\r\n  const err = new Error(message);\r\n              ^\r\n\r\nError: Cannot find module \u0027@supabase/supabase-js\u0027\r\nRequire stack:\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\src\\shared\\database\\supabase.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\src\\modules\\audits\\repositories\\audits.repository.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\src\\modules\\audits\\services\\audits.service.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\src\\modules\\audits\\controllers\\audits.controller.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\src\\modules\\audits\\routes\\audits.routes.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\app.ts\r\n- C:\\interview assignments\\seo-audit-dashboard\\backend\\index.ts\r\n    at node:internal/modules/cjs/loader:1365:15\r\n    at nextResolveSimple (C:\\interview assignments\\seo-audit-dashboard\\backend\\node_modules\\tsx\\dist\\register-B1c7OH6V.cjs:23:1010)\r\n    at C:\\interview assignments\\seo-audit-dashboard\\backend\\node_modules\\tsx\\dist\\register-B1c7OH6V.cjs:22:4512\r\n    at C:\\interview assignments\\seo-audit-dashboard\\backend\\node_modules\\tsx\\dist\\register-B1c7OH6V.cjs:22:2830\r\n    at resolveTsPaths (C:\\interview assignments\\seo-audit-dashboard\\backend\\node_modules\\tsx\\dist\\register-B1c7OH6V.cjs:23:762)\r\n    at C:\\interview assignments\\seo-audit-dashboard\\backend\\node_modules\\tsx\\dist\\register-B1c7OH6V.cjs:23:1203\r\n    at j._resolveFilename (file:///C:/interview%20assignments/seo-audit-dashboard/backend/node_modules/tsx/dist/register-nyXW-TH3.mjs:2:18825)\r\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1021:19)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1026:22)\r\n    at Function._load (node:internal/modules/cjs/loader:1175:37) {\r\n  code: \u0027MODULE_NOT_FOUND\u0027,\r\n  requireStack: [\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\src\\\\shared\\\\database\\\\supabase.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\src\\\\modules\\\\audits\\\\repositories\\\\audits.repository.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\src\\\\modules\\\\audits\\\\services\\\\audits.service.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\src\\\\modules\\\\audits\\\\controllers\\\\audits.controller.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\src\\\\modules\\\\audits\\\\routes\\\\audits.routes.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\app.ts\u0027,\r\n    \u0027C:\\\\interview assignments\\\\seo-audit-dashboard\\\\backend\\\\index.ts\u0027\r\n  ]\r\n}\r\n\r\nNode.js v22.18.0\r\n",
+        "durationMs": 8830
+      }
+    ],
+    "executions": [
+      {
+        "source": "backend-typecheck",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "args": [
+          "run",
+          "typecheck"
+        ],
+        "cwd": "C:\\interview assignments\\seo-audit-dashboard\\backend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32",
+        "nodeExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "nodeVersion": "v22.18.0",
+        "packageManager": "npm",
+        "packageManagerExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "packageManagerVersion": "11.13.0",
+        "cleanup": {
+          "RootProcessId": 5480,
+          "Completed": true,
+          "ProcessesObserved": 7,
+          "ProcessesTerminated": 1,
+          "Failure": null
+        }
+      },
+      {
+        "source": "backend-tests",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "args": [
+          "test"
+        ],
+        "cwd": "C:\\interview assignments\\seo-audit-dashboard\\backend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32",
+        "nodeExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "nodeVersion": "v22.18.0",
+        "packageManager": "npm",
+        "packageManagerExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "packageManagerVersion": "11.13.0",
+        "cleanup": {
+          "RootProcessId": 5356,
+          "Completed": true,
+          "ProcessesObserved": 16,
+          "ProcessesTerminated": 1,
+          "Failure": null
+        }
+      },
+      {
+        "source": "health-endpoint",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "args": [
+          "run",
+          "api"
+        ],
+        "cwd": "C:\\interview assignments\\seo-audit-dashboard\\backend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32",
+        "nodeExecutable": "C:\\Program Files\\nodejs\\node.EXE",
+        "nodeVersion": "v22.18.0",
+        "packageManager": "npm",
+        "packageManagerExecutable": "C:\\Program Files\\nodejs\\npm.cmd",
+        "packageManagerVersion": "11.13.0",
+        "cleanup": {
+          "RootProcessId": 8804,
+          "Completed": true,
+          "ProcessesObserved": 9,
+          "ProcessesTerminated": 0,
+          "Failure": null
+        }
+      }
+    ]
+  }
+}

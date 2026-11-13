@@ -1,0 +1,27 @@
+model Audit {
+  id           String      @id @default(cuid())
+  jobId        String      @unique
+  url          String
+  businessType String
+  city         String
+  state        String
+  status       AuditStatus @default(QUEUED)
+  overallScore Int?
+
+  dataSources Json?
+  signals     Json?
+  analysis    Json?
+  note        String?
+
+  reportPath  String?
+  error       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  created_by  String?
+  completedAt DateTime?
+
+  auth Auth? @relation(fields: [created_by], references: [id])
+
+  @@index([status, createdAt])
+  @@index([url, createdAt])
+}

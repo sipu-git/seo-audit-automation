@@ -1,0 +1,6 @@
+enum AuditStatus {
+    QUEUED     @map("queued")
+    PROCESSING @map("processing")
+    COMPLETED  @map("completed")
+    FAILED     @map("failed")
+}
