@@ -2,7 +2,8 @@ import { GraphQLError } from "graphql";
 import type { GraphQLContext } from "../../../graphql/context.js";
 import {
   validateRequestPasswordResetInput, validateResetPasswordInput,
-  validateSignInInput, validateSignUpInput, type ResetPasswordInput, type SignInInput, type SignUpInput,
+  validateSignInInput, validateSignUpInput, validateUpdateMyProfileInput,
+  type ResetPasswordInput, type SignInInput, type SignUpInput,
 } from "../validations/auth.validation.js";
 import { authService } from "../services/auth.service.js";
 import { getUserRole, requireAdmin, requireUser } from "../services/authorization.service.js";
@@ -33,6 +34,16 @@ export const authResolvers = {
       return payload;
     },
     signOut: (_parent: unknown, _args: unknown, context: GraphQLContext) => {
+      context.clearAuthCookies();
+      return true;
+    },
+    updateMyProfile: async (_parent: unknown, args: { input: unknown }, context: GraphQLContext) => {
+      const user = requireUser(context);
+      return authService.updateMyProfile(user.id, validateUpdateMyProfileInput(args.input));
+    },
+    deleteMyAccount: async (_parent: unknown, _args: unknown, context: GraphQLContext) => {
+      const user = requireUser(context);
+      await authService.deleteMyAccount(user.id);
       context.clearAuthCookies();
       return true;
     },

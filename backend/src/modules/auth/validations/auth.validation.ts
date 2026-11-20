@@ -15,6 +15,12 @@ export const signInSchema = z.object({
   password: signInPasswordSchema,
 });
 
+export const updateMyProfileSchema = z.object({
+  fullName: fullNameSchema,
+  email: emailSchema,
+  phone: optionalPhoneSchema.optional(),
+});
+
 export const requestPasswordResetSchema = z.object({
   email: emailSchema,
 });
@@ -28,6 +34,7 @@ export const resetPasswordSchema = z.object({
 
 export type SignUpInput = z.infer<typeof signUpSchema>;
 export type SignInInput = z.infer<typeof signInSchema>;
+export type UpdateMyProfileInput = z.infer<typeof updateMyProfileSchema>;
 export type RequestPasswordResetInput = z.infer<typeof requestPasswordResetSchema>;
 export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 
@@ -49,6 +56,10 @@ export function validateSignUpInput(input: unknown): SignUpInput {
 
 export function validateSignInInput(input: unknown): SignInInput {
   return validateWithZod(signInSchema, input);
+}
+
+export function validateUpdateMyProfileInput(input: unknown): UpdateMyProfileInput {
+  return validateWithZod(updateMyProfileSchema, input);
 }
 
 export function validateRequestPasswordResetInput(input: unknown): RequestPasswordResetInput {

@@ -30,7 +30,7 @@ function responsePreview(response: Response, body: unknown) {
     return undefined;
   }
 
-  let parsedBody = body;
+  let parsedBody: unknown = body;
   if (typeof body === "string") {
     try {
       parsedBody = JSON.parse(body) as unknown;

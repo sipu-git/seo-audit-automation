@@ -1,6 +1,6 @@
 import { GraphQLError } from "graphql";
 import { prisma } from "../../../db/client.js";
-import type { SignInInput, SignUpInput } from "../validations/auth.validation.js";
+import type { SignInInput, SignUpInput, UpdateMyProfileInput } from "../validations/auth.validation.js";
 import { assertJwtSecretConfigured } from "./auth-token.service.js";
 import { hashPassword, isBcryptPasswordHash, verifyPassword } from "./password.service.js";
 import { verifyLegacyPassword } from "./legacy-password.service.js";
@@ -40,6 +40,43 @@ export const authService = {
         updatedAt: true,
       },
     });
+  },
+
+  async updateMyProfile(userId: string, input: UpdateMyProfileInput) {
+    try {
+      return await prisma.auth.update({
+        where: { id: userId },
+        data: {
+          fullName: input.fullName,
+          email: input.email,
+          phone: input.phone ?? null,
+        },
+        select: {
+          id: true,
+          email: true,
+          fullName: true,
+          phone: true,
+          profilePicture: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
+    } catch (error) {
+      if (isUniqueEmailError(error)) {
+        throw new GraphQLError("An account with that email already exists.", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            http: { status: 400 },
+          },
+        });
+      }
+      throw error;
+    }
+  },
+
+  async deleteMyAccount(userId: string) {
+    await prisma.auth.delete({ where: { id: userId } });
+    return true;
   },
 
   async signUp(input: SignUpInput) {

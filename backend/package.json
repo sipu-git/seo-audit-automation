@@ -10,6 +10,7 @@
     "worker:watch": "tsx watch src/modules/worker/worker-entry.ts",
     "db:generate": "prisma generate",
     "db:deploy": "prisma migrate deploy",
+    "build": "tsc -p tsconfig.json",
     "test": "vitest run",
     "typecheck": "tsc --noEmit -p tsconfig.json"
   },
