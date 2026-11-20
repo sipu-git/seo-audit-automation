@@ -21,7 +21,7 @@ export const workflow = [
     number: "03",
     title: "Process the audit",
     description:
-      "The separate worker records the job in PostgreSQL, respects robots.txt, crawls a bounded set of same-origin pages from sitemaps and links, validates JSON-LD structure, queries configured provider integrations, and requests a prioritized analysis.",
+      "The BullMQ worker records the job in PostgreSQL, respects robots.txt, crawls a bounded set of same-origin pages from sitemaps and links, validates JSON-LD structure, queries configured provider integrations, and requests a prioritized analysis.",
     detail: "backend/modules/worker/audit-worker.ts",
     icon: Activity,
   },

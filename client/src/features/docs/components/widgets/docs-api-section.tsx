@@ -9,7 +9,7 @@ export function DocsApiSection() {
       <DocsSectionHeading
         eyebrow="INTEGRATION POINTS"
         title="REST API endpoints"
-        description="The frontend calls the standalone Express API; BullMQ and the separate worker process handle long-running audits."
+        description="The frontend calls the Express API, which enqueues and processes long-running audits through BullMQ and Redis."
       />
 
       <Card className="overflow-hidden border-slate-200/90 shadow-sm">

@@ -9,7 +9,7 @@ export function DocsSetupSection() {
       <DocsSectionHeading
         eyebrow="LOCAL DEVELOPMENT"
         title="Run the workspace locally"
-        description="The Next.js frontend, Express API, and BullMQ worker run as separate processes."
+        description="The Next.js frontend runs separately; the Express backend serves the API and consumes BullMQ jobs in one process."
       />
 
       <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
@@ -53,16 +53,15 @@ export function DocsSetupSection() {
           <CardHeader className="space-y-2 pb-3">
             <div className="flex items-center gap-2 text-emerald-800">
               <Workflow className="size-5" />
-              <CardTitle className="text-sm font-semibold">3. Start API and worker</CardTitle>
+              <CardTitle className="text-sm font-semibold">3. Start backend API and worker</CardTitle>
             </div>
             <div className="rounded-lg bg-slate-950 p-3 font-mono text-xs text-emerald-400">
               <p>npm run api --prefix backend</p>
-              <p>npm run worker --prefix backend</p>
             </div>
           </CardHeader>
           <CardContent>
             <p className="text-xs leading-relaxed text-slate-600">
-              The API accepts requests; the worker consumes Redis jobs, crawls sites, calls Google Gemini, and creates PDFs.
+              This starts the API and its BullMQ worker together. The worker consumes Redis jobs, crawls sites, calls Google Gemini, and creates PDFs.
             </p>
           </CardContent>
         </Card>

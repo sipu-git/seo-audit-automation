@@ -44,7 +44,7 @@ export default function MyAuditsPage() {
     fetchPolicy: "cache-and-network",
     notifyOnNetworkStatusChange: true,
   });
-  const { refetch, observable } = auditsQuery;
+  const { refetch, observable, startPolling, stopPolling } = auditsQuery;
   const auditList = auditsQuery.data?.auditList;
   const audits = auditList?.items ?? EMPTY_AUDITS;
   const summary = auditList?.summary;
@@ -54,6 +54,12 @@ export default function MyAuditsPage() {
   const firstVisible = totalCount ? (visiblePage - 1) * PAGE_SIZE + 1 : 0;
   const lastVisible = Math.min(visiblePage * PAGE_SIZE, totalCount);
   const error = auditsQuery.error?.message ?? "";
+
+  useEffect(() => {
+    if ((summary?.active ?? 0) > 0) startPolling(10_000);
+    else stopPolling();
+    return () => stopPolling();
+  }, [startPolling, stopPolling, summary?.active]);
 
   useEffect(() => {
     const subscription = observable.subscribe(({ data }) => {

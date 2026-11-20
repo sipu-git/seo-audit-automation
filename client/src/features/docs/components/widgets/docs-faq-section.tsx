@@ -10,11 +10,11 @@ export function DocsFaqSection() {
       question: "Why is an audit staying queued?",
       answer: (
         <>
-          Confirm Redis is running and reachable, and that the worker process is running via{" "}
+          Confirm <code>REDIS_URL</code> is configured and the backend API is running. The API starts the BullMQ worker in the same process; check its logs for{" "}
           <code className="rounded bg-slate-100 px-1.5 py-0.5 font-mono text-emerald-800">
-            npm run worker
+            Worker listening on seo-audit-jobs
           </code>
-          . The web app enqueues jobs to Redis; it does not process them itself.
+          .
         </>
       ),
     },

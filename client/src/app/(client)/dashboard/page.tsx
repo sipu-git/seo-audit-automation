@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client/react";
 import { AppShell } from "@/src/shared/layout/app-shell";
 import { AuditForm } from "@/src/features/audits/components/audit-form";
@@ -29,11 +29,12 @@ export default function ClientDashboardPage() {
       notifyOnNetworkStatusChange: true,
     },
   );
-  const { refetch } = auditsQuery;
+  const { refetch, startPolling, stopPolling } = auditsQuery;
   const audits = auditsQuery.data?.audits ?? EMPTY_AUDITS;
 
   function queued(jobId: string) {
     setSelectedId(jobId);
+    void refetch();
   }
 
   const selected = selectedId
@@ -44,6 +45,12 @@ export default function ClientDashboardPage() {
   ).length;
   const completedCount = audits.filter((audit) => audit.status === "COMPLETED").length;
   const error = auditsQuery.error?.message ?? "";
+
+  useEffect(() => {
+    if (activeCount > 0) startPolling(10_000);
+    else stopPolling();
+    return () => stopPolling();
+  }, [activeCount, startPolling, stopPolling]);
 
   return (
     <AppShell
