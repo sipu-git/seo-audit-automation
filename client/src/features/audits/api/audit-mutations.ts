@@ -24,4 +24,9 @@ export type CreateAuditMutationData = {
   };
 };
 
+export type DeleteAuditMutationData = {
+  deleteAudit: boolean;
+}
+
+export type DeleteAuditMutationVariables = { jobId: string };
 export type CreateAuditMutationVariables = { input: AuditInput };
