@@ -21,7 +21,7 @@ export function DashboardMetricCard({
   description: string;
 }) {
   return (
-    <Card className="flex min-h-[94px] items-center gap-3.5 rounded-[14px] border-[var(--line)] bg-[var(--surface)] p-[18px_20px] shadow-sm">
+    <Card className="flex min-h-[94px] items-center gap-3.5 rounded-[14px] border-[var(--line)] bg-[var(--surface)] p-[18px_20px]">
       <span className={`grid size-10 shrink-0 place-items-center rounded-xl ${tone === "lilac" ? "bg-violet-100 text-violet-700" : tone === "mint" ? "bg-emerald-100 text-emerald-700" : tone === "blue" ? "bg-sky-100 text-sky-700" : "bg-orange-100 text-orange-700"}`}>
         <Icon name={icon} />
       </span>

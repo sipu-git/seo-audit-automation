@@ -24,7 +24,7 @@ function MetricCard({
   }[tone];
 
   return (
-    <Card className="border-[var(--line)] bg-[var(--surface)] shadow-sm">
+    <Card className="border-[var(--line)] bg-[var(--surface)]">
       <CardContent className="flex items-center gap-4 p-5">
         <span className={`grid size-11 shrink-0 place-items-center rounded-xl ${iconTone}`}>
           <Icon className="size-5" aria-hidden="true" />

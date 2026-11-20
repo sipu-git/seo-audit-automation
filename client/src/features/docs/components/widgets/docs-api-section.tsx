@@ -18,7 +18,7 @@ export function DocsApiSection() {
             const isGet = endpoint.method === "GET";
             return (
               <div
-                key={`${endpoint.method}-${endpoint.path}`}
+                key={endpoint.id}
                 className="flex flex-col gap-2 p-4 transition-colors hover:bg-slate-50/70 sm:flex-row sm:items-center sm:gap-4"
               >
                 <Badge

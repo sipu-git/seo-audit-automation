@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const backendApiUrl = (
-  process.env.BACKEND_API_URL ?? "https://seo-audit-automation.onrender.com"
+  // process.env.BACKEND_API_URL ?? "https://seo-audit-automation.onrender.com"
+  process.env.BACKEND_API_URL ?? "http://localhost:4000"
 ).replace(/\/+$/, "");
 
 const nextConfig: NextConfig = {

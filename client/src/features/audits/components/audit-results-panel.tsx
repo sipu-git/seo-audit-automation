@@ -44,7 +44,7 @@ export function AuditResultsPanel({
   deletingJobId: string | null;
 }) {
   return (
-    <Card id="audit-results" className="overflow-hidden border-[var(--line)] bg-[var(--surface)] shadow-sm">
+    <Card id="audit-results" className="overflow-hidden border-[var(--line)] bg-[var(--surface)]">
       <CardHeader className="gap-4 border-b border-[var(--line)] p-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <CardTitle className="text-lg text-[var(--ink)]">Audit results</CardTitle>

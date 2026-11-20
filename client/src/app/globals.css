@@ -37,9 +37,13 @@
 :root,
 :root.light {
   color-scheme: light;
+  --page-background: #fefcff;
+  --page-glow:
+    radial-gradient(circle at 30% 70%, rgba(173, 216, 230, 0.35), transparent 60%),
+    radial-gradient(circle at 70% 30%, rgba(255, 182, 193, 0.4), transparent 60%);
   --ink: #18211f;
   --muted: #77827f;
-  --line: #e9eeeb;
+  --line: #d9deda;
   --paper: #eefaee;
   --surface: #ffffff;
   --surface-raised: #f8fbf9;
@@ -56,6 +60,8 @@
 
 :root.dark {
   color-scheme: dark;
+  --page-background: var(--paper);
+  --page-glow: none;
   --ink: #e6f1eb;
   --muted: #a0b1a8;
   --line: #2a4036;
@@ -111,7 +117,11 @@
   body {
     margin: 0;
     color: var(--ink);
-    background: var(--paper);
+    background-color: var(--page-background, var(--paper));
+    background-image: var(--page-glow, none);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
     font-family: var(--app-font);
     -webkit-font-smoothing: antialiased;
   }

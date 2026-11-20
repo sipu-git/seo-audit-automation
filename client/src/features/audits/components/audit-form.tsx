@@ -62,7 +62,7 @@ export function AuditForm({ onQueued, compact = false }: {
     <Form {...form}>
       <form className="flex h-full flex-col" onSubmit={form.handleSubmit(submit)}>
         <Card
-          className={`flex h-full flex-col justify-between rounded-[14px] border-[var(--line)] bg-[var(--surface)] p-6 shadow-sm ${compact ? "h-auto border-0 bg-transparent p-0 shadow-none" : "max-[560px]:p-4"}`}
+          className={`flex h-full flex-col justify-between rounded-[14px] border-[var(--line)] bg-[var(--surface)] p-6 ${compact ? "h-auto border-0 bg-transparent p-0 shadow-none" : "max-[560px]:p-4"}`}
         >
           <div className={compact ? "mb-4 hidden items-center gap-3" : "mb-5 flex items-center gap-3"}>
             <span className="grid size-10 place-items-center rounded-xl border border-[var(--green-soft)] bg-[var(--green-soft)] text-[var(--green)] shadow-sm"><Icon name="globe" /></span>

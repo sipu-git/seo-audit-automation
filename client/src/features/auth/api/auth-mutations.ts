@@ -41,6 +41,21 @@ export const SIGN_OUT_MUTATION = gql`
   }
 `;
 
+export const UPDATE_MY_PROFILE_MUTATION = gql`
+  mutation UpdateMyProfile($input: UpdateMyProfileInput!) {
+    updateMyProfile(input: $input) {
+      ...AuthUserFields
+    }
+  }
+  ${AUTH_USER_FIELDS}
+`;
+
+export const DELETE_MY_ACCOUNT_MUTATION = gql`
+  mutation DeleteMyAccount {
+    deleteMyAccount
+  }
+`;
+
 export const REQUEST_PASSWORD_RESET_MUTATION = gql`
   mutation RequestPasswordReset($email: String!) {
     requestPasswordReset(email: $email) {
@@ -69,6 +84,22 @@ export type SignInMutationData = {
 
 export type SignUpMutationData = {
   signUp: import("./auth-types").AuthPayload;
+};
+
+export type UpdateMyProfileMutationData = {
+  updateMyProfile: import("./auth-types").AuthUser;
+};
+
+export type UpdateMyProfileMutationVariables = {
+  input: {
+    fullName: string;
+    email: string;
+    phone: string | null;
+  };
+};
+
+export type DeleteMyAccountMutationData = {
+  deleteMyAccount: boolean;
 };
 
 export type RequestPasswordResetMutationData = {

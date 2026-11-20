@@ -57,7 +57,7 @@ export default function PasswordRecoveryPage() {
   }
 
   return (
-    <Card className="w-full max-w-md border-slate-200/90 shadow-lg shadow-slate-900/5">
+    <Card className="w-full max-w-md border-slate-200/90 shadow-md shadow-slate-900/5">
       <CardHeader>
         <p className="mb-2 text-[9px] font-bold tracking-[1.35px] text-[var(--muted)]">CRAWLIX WORKSPACE</p>
         <CardTitle>Reset your password</CardTitle>

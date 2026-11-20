@@ -129,7 +129,7 @@ export default function AdminDashboardPage() {
       description="Monitor queued jobs, review completed reports, and initiate manual audits."
       action={
         <Button
-          className="h-10 rounded-[9px] px-[15px] text-xs font-bold shadow-[0_5px_12px_#118d681f] transition-transform hover:-translate-y-px"
+          className="h-10 rounded-[9px] px-[15px] text-xs font-bold transition-transform hover:-translate-y-px"
           onClick={() => setShowForm((value) => !value)}
         >
           <Icon className="size-4" name={showForm ? "close" : "plus"} />

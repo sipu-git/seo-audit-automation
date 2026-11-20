@@ -21,7 +21,7 @@ export function AdminQueueStatus({
 
   return (
     <Card
-      className="flex min-h-[68px] items-center justify-between gap-4 rounded-xl border-[var(--line)] bg-[var(--surface)] px-4 py-3 shadow-sm"
+      className="flex min-h-[68px] items-center justify-between gap-4 rounded-xl border-[var(--line)] bg-[var(--surface)] px-4 py-3"
       role="status"
       aria-live="polite"
     >

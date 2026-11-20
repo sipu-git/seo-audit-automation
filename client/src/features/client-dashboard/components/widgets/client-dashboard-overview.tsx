@@ -34,7 +34,7 @@ export function ClientWelcome() {
         <div className="absolute -right-1 top-0 h-48 w-64 rotate-12 rounded-[50%] border border-[var(--line)] opacity-60" />
         <div className="absolute right-8 top-5 h-40 w-56 -rotate-12 rounded-[50%] border border-[var(--line)] opacity-60" />
         <div className="absolute right-8 top-0 size-52 rounded-full bg-[radial-gradient(circle,var(--green-soft),transparent_72%)] opacity-80" />
-        <div className="absolute right-12 top-6 z-10 w-[220px] rotate-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4 shadow-xl">
+        <div className="absolute right-12 top-6 z-10 w-[220px] rotate-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-4">
           <span className="text-[8px] font-bold tracking-wide text-[var(--muted)]">SEARCH VISIBILITY</span>
           <div className="mt-3 flex h-[70px] items-end gap-1.5 border-b border-[var(--line)] bg-[repeating-linear-gradient(to_bottom,transparent_0,transparent_22px,var(--line)_23px)]">
             {([24, 35, 30, 44, 41, 58, 52, 66, 62, 75, 70, 93]).map((height, index) => (
@@ -45,7 +45,7 @@ export function ClientWelcome() {
             <span>↗</span> Growing signal
           </div>
         </div>
-        <div className="absolute -right-1 bottom-3 z-20 flex rotate-[-3deg] items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3 shadow-lg">
+        <div className="absolute -right-1 bottom-3 z-20 flex rotate-[-3deg] items-center gap-2 rounded-xl border border-[var(--line)] bg-[var(--surface)] p-3">
           <span className="grid size-7 place-items-center rounded-lg bg-[var(--green-soft)] text-[var(--green)]">✓</span>
           <div>
             <strong className="block text-[9px] text-[var(--ink)]">Ready to improve</strong>

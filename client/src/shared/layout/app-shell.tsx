@@ -98,6 +98,11 @@ export function AppShell({
   const { user, loading } = useAppSelector((state) => state.auth);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<"sign-in" | "sign-up">("sign-in");
+  const fullName = user?.fullName?.trim() ?? "";
+  const email = user?.email?.trim() ?? "";
+  const displayName = fullName || "Crawlix workspace";
+  const displayEmail = email || "SEO audit workspace";
+  const avatarInitial = (fullName || email || "C").charAt(0).toUpperCase();
 
   function openAuth(mode: "sign-in" | "sign-up") {
     setAuthMode(mode);
@@ -116,27 +121,19 @@ export function AppShell({
   }
 
   return (
-    <SidebarProvider className="min-h-screen bg-[var(--paper)] border-r border-[var(--line)]">
+    <SidebarProvider className="min-h-screen border-r border-[var(--line)] bg-transparent">
       <Sidebar collapsible="icon">
         <SidebarHeader>
           <Link
-            className="flex h-10 items-center gap-3 overflow-hidden rounded-md px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+            className="overflow-hidden px-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
             href="/"
             aria-label="Crawlix home"
           >
-            {/* <span className="grid size-9 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700 group-data-[collapsible=icon]:hidden">
-              <Icon name="chart" />
-            </span> */}
-            <Image
-              src="/favicon.ico"
-              alt="Crawlix"
-              width={120}
-              height={40}
-              className="h-10 w-[120px] shrink-0 object-contain object-left group-data-[collapsible=icon]:hidden"
-            />
+            <span className="truncate text-lg font-semibold tracking-tight text-[var(--ink)] group-data-[collapsible=icon]:hidden">
+              Crawlix
+            </span>
           </Link>
         </SidebarHeader>
-
         <TooltipProvider>
           <AppNavigation pathname={pathname} isAdmin={user?.role === "ADMIN"} />
         </TooltipProvider>
@@ -156,22 +153,22 @@ export function AppShell({
           <SidebarSeparator className="my-3 mx-0 w-full" />
           <div className="flex min-w-0 items-center gap-2 px-1 py-1">
             <div className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-xs font-bold text-[var(--green-dark)]">
-              S
+              {avatarInitial}
             </div>
             <div className="min-w-0 group-data-[collapsible=icon]:hidden">
               <strong className="block truncate text-xs font-semibold text-[var(--ink)]">
-                {user?.fullName ?? "Crawlix workspace"}
+                {displayName}
               </strong>
               <small className="mt-1 block text-[10px] text-[var(--muted)]">
-                {user?.email ?? "SEO audit workspace"}
+                {displayEmail}
               </small>
             </div>
           </div>
         </SidebarFooter>
       </Sidebar>
 
-      <SidebarInset className="min-h-screen bg-[var(--paper)]">
-        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_90%,transparent)] px-4 shadow-sm backdrop-blur-xl md:px-8">
+      <SidebarInset className="min-h-screen bg-transparent">
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[var(--line)] bg-[color-mix(in_srgb,var(--surface)_90%,transparent)] px-4 backdrop-blur-xl md:px-8">
           <div className="flex items-center gap-3.5">
             <SidebarTrigger
               className="text-[#015c21]"
@@ -193,14 +190,28 @@ export function AppShell({
               </strong>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-2">
             <ThemeSwitcher />
-            <span className="flex items-center gap-2 rounded-full border border-[var(--line)] bg-[var(--surface)] px-2.5 py-2 text-[9px] font-bold tracking-[.75px] text-[var(--muted)]">
-              <span className="size-1.5 rounded-full bg-emerald-500" /> AUDIT WORKSPACE
-            </span>
+            <span aria-hidden="true" className="mx-1 h-5 w-px shrink-0 bg-[var(--line)]" />
             {user ? (
               <>
-                <span className="hidden text-sm font-medium text-slate-700 sm:inline">{user.fullName}</span>
+                <div className="flex min-w-0 items-center gap-2">
+                  <div
+                    aria-hidden="true"
+                    className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-xs font-bold text-[var(--green-dark)]"
+                  >
+                    {avatarInitial}
+                  </div>
+                  <div className="hidden min-w-0 sm:block">
+                    <strong className="block max-w-32 truncate text-xs font-semibold text-slate-700">
+                      {displayName}
+                    </strong>
+                    <span className="block max-w-32 truncate text-[10px] text-[var(--muted)]">
+                      {displayEmail}
+                    </span>
+                  </div>
+                </div>
+                <span aria-hidden="true" className="mx-1 h-5 w-px shrink-0 bg-[var(--line)]" />
                 <Button variant="outline" size="sm" onClick={() => {
                   signOut();
                 }}>Sign out</Button>
