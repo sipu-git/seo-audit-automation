@@ -3,6 +3,7 @@ import { app, startGraphqlApi } from "./app";
 import { closeAuditQueue } from "./src/shared/queue/audit-queue";
 import { closeRedisClient } from "./src/shared/redis/client";
 import { prisma } from "./src/db/client";
+import { startAuditWorker } from "./src/modules/worker/audit-worker";
 
 const port = process.env.PORT ? Number(process.env.PORT) : 4000;
 if (!Number.isInteger(port) || port < 1 || port > 65_535) {
@@ -11,6 +12,7 @@ if (!Number.isInteger(port) || port < 1 || port > 65_535) {
 
 async function main() {
   const apolloServer = await startGraphqlApi();
+  const shutdownWorker = startAuditWorker();
   const server = app.listen(port, "0.0.0.0", () => {
     console.log(`Crawlix API listening on port ${port}`);
   });
@@ -33,6 +35,7 @@ async function main() {
       }
 
       try {
+        await shutdownWorker();
         await apolloServer.stop();
         await closeAuditQueue();
         await closeRedisClient();

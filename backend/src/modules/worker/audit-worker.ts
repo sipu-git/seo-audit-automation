@@ -7,7 +7,7 @@ import { closePdfBrowser } from "../../shared/reports/pdf/browser";
 import { logRedisConnection } from "../../shared/redis/log-connection.js";
 import { processAuditJob } from "./services/audit-processing.service";
 
-async function main() {
+export function startAuditWorker() {
   const redisUrl = process.env.REDIS_URL;
   if (!redisUrl) {
     throw new Error("REDIS_URL is missing. Add the Redis URL to backend/.env.");
@@ -42,18 +42,13 @@ async function main() {
     console.error(`Audit job ${job?.id ?? "unknown"} failed:`, error);
   });
 
-  async function shutdown() {
+  let isShuttingDown = false;
+  return async function shutdown() {
+    if (isShuttingDown) return;
+    isShuttingDown = true;
+
     await worker.close();
     await closePdfBrowser();
-    await connection.quit();
-    process.exit(0);
-  }
-
-  process.once("SIGINT", shutdown);
-  process.once("SIGTERM", shutdown);
+    if (connection.status !== "end") await connection.quit();
+  };
 }
-
-main().catch((error) => {
-  console.error("Audit worker failed to start:", error);
-  process.exitCode = 1;
-});
