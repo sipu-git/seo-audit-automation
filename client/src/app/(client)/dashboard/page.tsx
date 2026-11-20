@@ -2,25 +2,33 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@apollo/client/react";
-import { AppShell } from "@/src/shared/layout/app-shell";
-import { AuditForm } from "@/src/features/audits/components/audit-form";
+import dynamic from "next/dynamic";
 import type { AuditRow } from "@/src/features/audits/types/audit-types";
-import { ClientAuditHistory } from "@/features/audits/components/client-audit-history";
-import {
-  ClientMetrics,
-  ClientWelcome,
-} from "@/src/features/client-dashboard/components/widgets/client-dashboard-overview";
 import { ClientSelectedAudit } from "@/features/audits/components/client-selected-audit";
-import {
-  AUDITS_QUERY,
-  type AuditsQueryData,
-  type AuditsQueryVariables,
-} from "@/src/features/audits/api/audit-queries";
+import { AuditDetailsLoadingSkeleton } from "@/features/audits/components/audit-details-loading-skeleton";
+import {AUDITS_QUERY,type AuditsQueryData,type AuditsQueryVariables} from "@/src/features/audits/api/audit-queries";
 
 const EMPTY_AUDITS: AuditRow[] = [];
+const AppShell = dynamic(() => import("@/src/shared/layout/app-shell").then((module) => module.AppShell));
+const AuditForm = dynamic(() => import("@/src/features/audits/components/audit-form").then((module) => module.AuditForm),{
+  loading: () => <AuditDetailsLoadingSkeleton />,
+});
+const ClientAuditHistory = dynamic(() => import("@/src/features/audits/components/client-audit-history").then((module) => module.ClientAuditHistory),{
+  loading: () => <AuditDetailsLoadingSkeleton />,
+});
+const ClientMetrics = dynamic(() => import("@/src/features/client-dashboard/components/widgets/client-dashboard-overview").then((module) => module.ClientMetrics),{
+  loading: () => <AuditDetailsLoadingSkeleton />,
+});
+const ClientWelcome = dynamic(() => import("@/src/features/client-dashboard/components/widgets/client-dashboard-overview").then((module) => module.ClientWelcome),{
+  loading: () => <AuditDetailsLoadingSkeleton />,
+});
+const AuditDetailsDialog = dynamic(() => import("@/features/audits/components/audit-details-dialog").then((module) => module.AuditDetailsDialog),
+  { loading: () => <AuditDetailsLoadingSkeleton /> },
+);
 
 export default function ClientDashboardPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [reportAudit, setReportAudit] = useState<AuditRow | null>(null);
   const auditsQuery = useQuery<AuditsQueryData, AuditsQueryVariables>(
     AUDITS_QUERY,
     {
@@ -76,7 +84,12 @@ export default function ClientDashboardPage() {
           onRefresh={() => void refetch()}
         />
       </div>
-      {selected && <ClientSelectedAudit audit={selected} />}
+      {selected && (
+        <ClientSelectedAudit audit={selected} onViewReport={setReportAudit} />
+      )}
+      {reportAudit && (
+        <AuditDetailsDialog audit={reportAudit} onClose={() => setReportAudit(null)} />
+      )}
     </AppShell>
   );
 }

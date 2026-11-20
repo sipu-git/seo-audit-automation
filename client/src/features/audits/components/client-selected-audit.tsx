@@ -1,11 +1,17 @@
 import type { CSSProperties } from "react";
 import type { AuditRow } from "@/src/features/audits/types/audit-types";
-import { AuditReport } from "@/src/features/audits/components/audit-report";
 import { AuditStatusBadge } from "@/components/dashboard-widgets";
 import { Icon } from "@/components/ui/icons";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
-export function ClientSelectedAudit({ audit }: { audit: AuditRow }) {
+export function ClientSelectedAudit({
+  audit,
+  onViewReport,
+}: {
+  audit: AuditRow;
+  onViewReport: (audit: AuditRow) => void;
+}) {
   const isComplete = audit.status === "COMPLETED";
   const isFailed = audit.status === "FAILED";
   const progress = Math.min(100, Math.max(0, audit.progress));
@@ -27,21 +33,20 @@ export function ClientSelectedAudit({ audit }: { audit: AuditRow }) {
         <AuditStatusBadge state={audit.status} />
       </div>
       {isComplete && audit.analysis ? (
-        <AuditReport
-          result={{
-            analysis: audit.analysis,
-            dataSources: audit.dataSources ?? undefined,
-            signals: audit.signals ?? undefined,
-            note: audit.note ?? undefined,
-            business: {
-              url: audit.url,
-              businessType: audit.businessType,
-              city: audit.city,
-              state: audit.state,
-            },
-          }}
-          reportJobId={audit.reportAvailable ? audit.jobId : undefined}
-        />
+        <Card className="flex flex-wrap items-center justify-between gap-4 border-[var(--line)] bg-[var(--surface)] p-4 shadow-none">
+          <div className="flex items-center gap-3">
+            <span className="grid size-10 place-items-center rounded-xl bg-[var(--green-soft)] text-[var(--green-dark)]">
+              <Icon name="check" />
+            </span>
+            <div>
+              <strong className="text-xs text-[var(--ink)]">Your SEO report is ready</strong>
+              <p className="mt-1 text-[10px] text-[var(--muted)]">Open the audit details to review your findings and next steps.</p>
+            </div>
+          </div>
+          <Button type="button" size="sm" onClick={() => onViewReport(audit)}>
+            View report
+          </Button>
+        </Card>
       ) : isFailed ? (
         <Card className="flex gap-3 rounded-[10px] border-red-200 bg-red-50 p-4 text-red-700 shadow-none">
           <Icon name="alert" />

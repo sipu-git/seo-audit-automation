@@ -2,26 +2,29 @@
 
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client/react";
+import dynamic from "next/dynamic";
 import { AppShell } from "@/src/shared/layout/app-shell";
-import {
-  AUDIT_LIST_QUERY,
-  type AuditListQueryData,
-  type AuditListQueryVariables,
-} from "@/src/features/audits/api/audit-queries";
-import {
-  DELETE_AUDIT_MUTATION,
-  type DeleteAuditMutationData,
-  type DeleteAuditMutationVariables,
-} from "@/src/features/audits/api/audit-mutations";
+import { AUDIT_LIST_QUERY, type AuditListQueryData, type AuditListQueryVariables } from "@/src/features/audits/api/audit-queries";
+import { DELETE_AUDIT_MUTATION, type DeleteAuditMutationData, type DeleteAuditMutationVariables } from "@/src/features/audits/api/audit-mutations";
 import type { AuditRow } from "@/src/features/audits/types/audit-types";
-import {
-  AuditLoadError,
-  AuditRefreshBanner,
-} from "@/features/audits/components/audit-refresh-banner";
-import { AuditResultsPanel } from "@/features/audits/components/audit-results-panel";
-import { AuditSummaryCards } from "@/features/audits/components/audit-summary-cards";
-import { AuditDeleteDialog } from "@/features/audits/components/audit-delete-dialog";
-import { ClientAuditDetails } from "@/features/audits/components/client-audit-details";
+import { AuditLoadError, AuditRefreshBanner, } from "@/features/audits/components/audit-refresh-banner";
+import { AuditDetailsLoadingSkeleton } from "@/features/audits/components/audit-details-loading-skeleton";
+
+const AuditDetailsDialog = dynamic(() => import("@/features/audits/components/audit-details-dialog").then((module) => module.AuditDetailsDialog),
+  { loading: () => <AuditDetailsLoadingSkeleton /> },
+);
+
+const AuditResultsPanel = dynamic(() => import("@/features/audits/components/audit-results-panel").then((module) => module.AuditResultsPanel), {
+  loading: () => <div className="grid w-full min-w-0 gap-4"><div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" /><div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" />
+    <div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" />
+    <div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" /></div>
+});
+
+const AuditSummaryCards = dynamic(() => import("@/features/audits/components/audit-summary-cards").then((module) => module.AuditSummaryCards), {
+  loading: () => <div className="grid w-full min-w-0 grid-cols-3 gap-4 max-[560px]:grid-cols-1 max-[560px]:gap-2"><div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" /><div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" /><div className="h-[60px] w-full animate-pulse rounded-lg bg-[var(--line)]" /></div>
+});
+
+const AuditDeleteDialog = dynamic(() => import("@/features/audits/components/audit-delete-dialog").then((module) => module.AuditDeleteDialog));
 
 const EMPTY_AUDITS: AuditRow[] = [];
 const PAGE_SIZE = 4;
@@ -146,7 +149,9 @@ export default function MyAuditsPage() {
         onDelete={requestDelete}
         deletingJobId={deleting ? auditToDelete?.jobId ?? null : null}
       />
-      <ClientAuditDetails audit={selectedAudit} onClose={() => setSelectedAudit(null)} />
+      {selectedAudit && (
+        <AuditDetailsDialog audit={selectedAudit} onClose={() => setSelectedAudit(null)} />
+      )}
       <AuditDeleteDialog
         audit={auditToDelete}
         deleting={deleting}

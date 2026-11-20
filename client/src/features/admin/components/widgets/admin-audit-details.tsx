@@ -1,5 +1,5 @@
 import type { AuditRow } from "@/src/features/audits/types/audit-types";
-import { AuditReport } from "@/src/features/audits/components/audit-report";
+import dynamic from "next/dynamic";
 import { AuditStatusBadge } from "@/components/dashboard-widgets";
 import { Icon } from "@/components/ui/icons";
 import {
@@ -10,6 +10,12 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Card } from "@/components/ui/card";
+import { AuditReportLoadingSkeleton } from "@/features/audits/components/audit-details-loading-skeleton";
+
+const AuditReport = dynamic(
+  () => import("@/features/audits/components/audit-report").then((module) => module.AuditReport),
+  { loading: () => <AuditReportLoadingSkeleton /> },
+);
 
 function dateLabel(value: string) {
   return new Intl.DateTimeFormat("en-IN", {

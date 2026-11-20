@@ -2,9 +2,12 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@apollo/client/react";
+import dynamic from "next/dynamic";
 import { AppShell } from "@/src/shared/layout/app-shell";
-import { AdminAuditDetails } from "@/src/features/admin/components/widgets/admin-audit-details";
-import { AuditForm } from "@/src/features/audits/components/audit-form";
+import {
+  AuditDetailsLoadingSkeleton,
+  AuditFormLoadingSkeleton,
+} from "@/features/audits/components/audit-details-loading-skeleton";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icons";
 import { Card } from "@/components/ui/card";
@@ -24,6 +27,14 @@ import {
 import type { AuditRow } from "@/src/features/audits/types/audit-types";
 
 const EMPTY_AUDITS: AuditRow[] = [];
+const AdminAuditDetails = dynamic(
+  () => import("@/src/features/admin/components/widgets/admin-audit-details").then((module) => module.AdminAuditDetails),
+  { loading: () => <AuditDetailsLoadingSkeleton /> },
+);
+const AuditForm = dynamic(
+  () => import("@/src/features/audits/components/audit-form").then((module) => module.AuditForm),
+  { loading: () => <AuditFormLoadingSkeleton /> },
+);
 
 export default function AdminDashboardPage() {
   const [search, setSearch] = useState("");
@@ -181,10 +192,12 @@ export default function AdminDashboardPage() {
         onRetry={() => void refetch()}
         onSelect={(audit) => setSelectedJobId(audit.jobId)}
       />
-      <AdminAuditDetails
-        audit={selected}
-        onClose={() => setSelectedJobId(null)}
-      />
+      {selected && (
+        <AdminAuditDetails
+          audit={selected}
+          onClose={() => setSelectedJobId(null)}
+        />
+      )}
     </AppShell>
   );
 }
