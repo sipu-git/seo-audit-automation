@@ -4,6 +4,7 @@ export type S3StorageConfig = {
   credentials?: {
     accessKeyId: string;
     secretAccessKey: string;
+    sessionToken?: string;
   };
 };
 
@@ -12,6 +13,7 @@ export function getS3StorageConfig(): S3StorageConfig {
   const region = process.env.AWS_REGION?.trim();
   const accessKeyId = process.env.AWS_ACCESS_KEY_ID?.trim();
   const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY?.trim();
+  const sessionToken = process.env.AWS_SESSION_TOKEN?.trim();
 
   const missing = Object.entries({ AWS_S3_BUCKET: bucket, AWS_REGION: region })
     .filter(([, value]) => !value)
@@ -28,7 +30,7 @@ export function getS3StorageConfig(): S3StorageConfig {
     bucket: bucket!,
     region: region!,
     ...(accessKeyId && secretAccessKey
-      ? { credentials: { accessKeyId, secretAccessKey } }
+      ? { credentials: { accessKeyId, secretAccessKey, ...(sessionToken ? { sessionToken } : {}) } }
       : {}),
   };
 }

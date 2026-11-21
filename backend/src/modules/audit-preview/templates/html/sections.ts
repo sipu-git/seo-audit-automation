@@ -1,4 +1,4 @@
-import type { AuditIssue } from "../../llm-integration/types";
+import type { AuditIssue } from "../../analysis-report/types";
 import { escapeHtml } from "./escape";
 
 export function renderIssues(title: string, description: string, items: AuditIssue[] = [], tone = "green") {

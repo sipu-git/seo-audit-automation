@@ -1,4 +1,4 @@
-import type { AuditPreviewInput, AuditAnalysis } from "../llm-integration/types";
+import type { AuditPreviewInput, AuditAnalysis } from "../analysis-report/types";
 
 export type AuditPdfData = {
   jobId: string;

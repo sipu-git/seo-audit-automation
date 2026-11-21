@@ -6,6 +6,7 @@ import { expressMiddleware } from "@as-integrations/express4";
 import { createContext } from "./src/graphql/context.js";
 import { resolvers, typeDefs } from "./src/graphql/schema.js";
 import { getAuditReportController } from "./src/modules/audits/controllers/audit-report.controller.js";
+import { uploadProfilePictureController } from "./src/modules/auth/controllers/profile-picture.controller.js";
 import { debugErrorsEnabled, requestLogger } from "./src/shared/http/request-logger.js";
 
 export const app = express();
@@ -17,6 +18,11 @@ app.get("/health", (_request, response) => {
   response.status(200).json({ status: "ok", service: "crawlix-api", requestId: response.locals.requestId });
 });
 app.use("/api/cron/audits", scheduledAuditsRouter);
+app.post(
+  "/api/profile-picture",
+  express.raw({ type: ["image/jpeg", "image/png", "image/webp"], limit: "5mb" }),
+  uploadProfilePictureController,
+);
 
 export async function startGraphqlApi() {
   const server = new ApolloServer({

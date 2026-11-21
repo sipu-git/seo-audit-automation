@@ -1,4 +1,4 @@
-import { emitAuditCompletedWebhook } from "../../shared/webhooks/audit-completed";
+import { emitAuditCompletedWebhook } from "../../shared/integrations/webhooks/audit-completed";
 
 type AuditCompletedNotification = {
   jobId: string;

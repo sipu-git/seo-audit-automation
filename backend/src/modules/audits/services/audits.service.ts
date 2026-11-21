@@ -20,7 +20,6 @@ function mapAudit(row: AuditRecord) {
     signals: row.signals,
     analysis: row.analysis,
     note: row.note,
-    reportPath: row.reportPath,
     error: row.error,
     createdAt: row.createdAt,
     completedAt: row.completedAt,
@@ -38,8 +37,8 @@ async function listAudits(take: number, ownerId?: string) {
 
 async function addAuditProgress(audits: ReturnType<typeof mapAudit>[]) {
   return Promise.all(audits.map(async (audit) => {
-    const { reportPath, ...publicAudit } = audit;
-    const reportAvailable = Boolean(reportPath);
+    const publicAudit = audit;
+    const reportAvailable = audit.status === "COMPLETED" && audit.analysis !== null;
     if (audit.status === "COMPLETED") return { ...publicAudit, reportAvailable, progress: 100 };
     if (audit.status === "FAILED") return { ...publicAudit, reportAvailable, progress: 0 };
     try {
@@ -174,16 +173,7 @@ export async function findAuditReport(jobId: string) {
     dataSources: audit.dataSources,
     note: audit.note,
     createdAt: audit.createdAt,
-    reportPath: audit.reportPath,
   };
-}
-
-export async function updateAuditReportPath(jobId: string, reportPath: string) {
-  return prisma.audit.update({
-    where: { jobId },
-    data: { reportPath },
-    select: { jobId: true },
-  });
 }
 
 export async function markAuditProcessing(jobId: string, input: AuditJobInput) {
@@ -236,18 +226,16 @@ export async function saveAuditAnalysis(
       analysis: result.analysis,
       note: result.note,
       error: null,
-      reportPath: null,
     },
     select: { jobId: true },
   });
 }
 
-export async function markAuditCompleted(jobId: string, reportPath: string) {
+export async function markAuditCompleted(jobId: string) {
   return prisma.audit.update({
     where: { jobId },
     data: {
       status: "COMPLETED",
-      reportPath,
       error: null,
       completedAt: new Date(),
     },

@@ -1,12 +1,13 @@
 import { GraphQLError } from "graphql";
-import { prisma } from "../../../db/client.js";
-import type { SignInInput, SignUpInput, UpdateMyProfileInput } from "../validations/auth.validation.js";
+import { prisma } from "../../../../db/client.js";
+import type { SignInInput, SignUpInput, UpdateMyProfileInput } from "../../validations/auth.validation.js";
 import { assertJwtSecretConfigured } from "./auth-token.service.js";
-import { hashPassword, isBcryptPasswordHash, verifyPassword } from "./password.service.js";
-import { verifyLegacyPassword } from "./legacy-password.service.js";
-import { createAuth, isUniqueEmailError, toAuthPayload } from "../utils/auth.util.js";
-import { requestPasswordReset, resetPasswordWithOtp } from "./password-reset.service.js";
-
+import { hashPassword, isBcryptPasswordHash, verifyPassword } from "../password-recovery/password.service.js";
+import { verifyLegacyPassword } from "../password-recovery/legacy-password.service.js";
+import { createAuth, isUniqueEmailError, toAuthPayload } from "../../utils/auth.util.js";
+import { requestPasswordReset, resetPasswordWithOtp } from "../password-recovery/password-reset.service.js";
+import { isProfilePictureContentType, mediaFilesUtil } from "../../utils/profile-utils/media-files.util.js";
+import { isProfilePictureReferenceForUser } from "../../utils/profile-utils/profile-picture-references.js";
 
 export const authService = {
   findAuthByEmail(email: string) {
@@ -72,6 +73,43 @@ export const authService = {
       }
       throw error;
     }
+  },
+
+  async uploadMyProfilePicture(userId: string, contentType: string, image: Buffer) {
+    if (!isProfilePictureContentType(contentType)) {
+      throw new GraphQLError("Choose a JPEG, PNG, or WebP image.", {
+        extensions: { code: "BAD_USER_INPUT", http: { status: 400 } },
+      });
+    }
+    if (image.byteLength < 1 || image.byteLength > 5 * 1024 * 1024) {
+      throw new GraphQLError("The profile picture must be larger than 0 bytes and 5 MB or smaller.", {
+        extensions: { code: "BAD_USER_INPUT", http: { status: 400 } },
+      });
+    }
+
+    return mediaFilesUtil.uploadProfilePictureToS3(userId, contentType, image);
+  },
+
+  async updateMyProfilePicture(userId: string, reference: string) {
+    if (!isProfilePictureReferenceForUser(reference, userId)) {
+      throw new GraphQLError("Invalid profile picture upload reference.", {
+        extensions: { code: "BAD_USER_INPUT", http: { status: 400 } },
+      });
+    }
+
+    return prisma.auth.update({
+      where: { id: userId },
+      data: { profilePicture: reference },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        phone: true,
+        profilePicture: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
   },
 
   async deleteMyAccount(userId: string) {

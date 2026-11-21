@@ -1,20 +1,14 @@
 import type { Prisma } from "../../../generated/prisma/client";
-import type { AuditAnalysis } from "../../../shared/llm-integration/types.js";
-import { generateAuditPdf } from "../../../shared/reports/pdf/generate.js";
-import {
-  getS3DownloadUrl,
-  isAuditReportReference,
-  readLocalAuditReport,
-  storeAuditReport,
-} from "../../../shared/storage/reports.js";
-import { findAuditReport, updateAuditReportPath } from "./audits.service.js";
+import type { AuditAnalysis } from "../../audit-preview/analysis-report/types.js";
+import { generateAuditPdf } from "../../audit-preview/templates/pdf/generate.js";
+import { findAuditReport } from "./audits.service.js";
 
 function hasUsableAnalysis(value: Prisma.JsonValue): value is { [key: string]: Prisma.JsonValue | undefined } {
   return typeof value === "object" && value !== null && !Array.isArray(value) &&
     typeof value.overall_score === "number";
 }
 
-async function rebuildReport(audit: NonNullable<Awaited<ReturnType<typeof findAuditReport>>>) {
+async function generateReport(audit: NonNullable<Awaited<ReturnType<typeof findAuditReport>>>) {
   if (audit.status !== "COMPLETED" || !audit.analysis || !hasUsableAnalysis(audit.analysis)) {
     return null;
   }
@@ -37,33 +31,17 @@ async function rebuildReport(audit: NonNullable<Awaited<ReturnType<typeof findAu
     note: audit.note,
   });
 
-  const reportPath = await storeAuditReport(audit.jobId, pdf);
-  await updateAuditReportPath(audit.jobId, reportPath);
-  console.warn(`Rebuilt missing PDF report for audit ${audit.jobId}.`);
-  return reportPath;
+  return pdf;
 }
 
 export async function downloadAuditReport(jobId: string) {
   const audit = await findAuditReport(jobId);
   if (!audit) return { kind: "not_found" as const };
 
-  let reportPath = audit.reportPath;
-  if (!reportPath || !isAuditReportReference(reportPath)) {
-    reportPath = await rebuildReport(audit);
+  if (audit.status !== "COMPLETED" || !audit.analysis || !hasUsableAnalysis(audit.analysis)) {
+    return { kind: "not_ready" as const };
   }
-  if (!reportPath) return { kind: "not_ready" as const };
-
-  const s3Url = await getS3DownloadUrl(reportPath);
-  if (s3Url) return { kind: "redirect" as const, url: s3Url };
-
-  let pdf: Buffer;
-  try {
-    pdf = await readLocalAuditReport(reportPath);
-  } catch (error) {
-    if (!(error instanceof Error) || !("code" in error) || error.code !== "ENOENT") throw error;
-    const recoveredPath = await rebuildReport(audit);
-    if (!recoveredPath) throw error;
-    pdf = await readLocalAuditReport(recoveredPath);
-  }
+  const pdf = await generateReport(audit);
+  if (!pdf) return { kind: "not_ready" as const };
   return { kind: "pdf" as const, pdf };
 }

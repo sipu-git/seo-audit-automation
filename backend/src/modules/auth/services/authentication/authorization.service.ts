@@ -1,5 +1,5 @@
 import { GraphQLError } from "graphql";
-import type { AuthenticatedUser, GraphQLContext } from "../../../graphql/context.js";
+import { AuthenticatedUser, GraphQLContext } from "../../../../graphql/context";
 
 export type UserRole = "CLIENT" | "ADMIN";
 

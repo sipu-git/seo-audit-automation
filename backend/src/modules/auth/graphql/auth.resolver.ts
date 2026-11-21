@@ -1,12 +1,13 @@
-import { GraphQLError } from "graphql";
 import type { GraphQLContext } from "../../../graphql/context.js";
 import {
   validateRequestPasswordResetInput, validateResetPasswordInput,
   validateSignInInput, validateSignUpInput, validateUpdateMyProfileInput,
   type ResetPasswordInput, type SignInInput, type SignUpInput,
 } from "../validations/auth.validation.js";
-import { authService } from "../services/auth.service.js";
-import { getUserRole, requireAdmin, requireUser } from "../services/authorization.service.js";
+import { authService } from "../services/authentication/auth.service.js";
+import { getUserRole, requireAdmin, requireUser } from "../services/authentication/authorization.service.js";
+import { isS3ProfilePictureReference } from "../utils/profile-utils/profile-picture-references.js";
+import { mediaFilesUtil } from "../utils/profile-utils/media-files.util.js";
 
 interface SignUpArgs { input: SignUpInput }
 interface SignInArgs { input: SignInInput }
@@ -41,6 +42,10 @@ export const authResolvers = {
       const user = requireUser(context);
       return authService.updateMyProfile(user.id, validateUpdateMyProfileInput(args.input));
     },
+    completeMyProfilePictureUpload: (_parent: unknown, args: { reference: string }, context: GraphQLContext) => {
+      const user = requireUser(context);
+      return authService.updateMyProfilePicture(user.id, args.reference);
+    },
     deleteMyAccount: async (_parent: unknown, _args: unknown, context: GraphQLContext) => {
       const user = requireUser(context);
       await authService.deleteMyAccount(user.id);
@@ -53,6 +58,12 @@ export const authResolvers = {
       authService.resetPasswordWithOtp(validateResetPasswordInput(args)),
   },
   AuthUser: {
+    profilePicture: (user: { profilePicture: string | null }) => {
+      if (!user.profilePicture || !isS3ProfilePictureReference(user.profilePicture)) {
+        return user.profilePicture;
+      }
+      return mediaFilesUtil.getProfilePictureUrl(user.profilePicture);
+    },
     role: (user: { email: string }) => getUserRole(user),
     createdAt: (user: { createdAt: Date }) => user.createdAt.toISOString(),
     updatedAt: (user: { updatedAt: Date }) => user.updatedAt.toISOString(),

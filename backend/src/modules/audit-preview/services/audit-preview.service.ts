@@ -1,5 +1,5 @@
 import { crawlPage } from "../../../shared/crawler/index";
-import { analyzeAuditWithGemini } from "../../../shared/llm-integration";
+import { analyzeAuditWithGemini } from "../../../shared/integrations/ai";
 import type { AuditPreviewInput } from "../validations/audit-preview.validation";
 import { getPageSpeedData } from "./pagespeed.service";
 import { getSearchConsoleData } from "./search-console.service";

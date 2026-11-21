@@ -82,7 +82,6 @@ export const AuditScalarFieldEnum = {
   signals: 'signals',
   analysis: 'analysis',
   note: 'note',
-  reportPath: 'reportPath',
   error: 'error',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',

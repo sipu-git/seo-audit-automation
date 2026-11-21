@@ -1,25 +1,12 @@
 import { createAuditHandler, deleteAuditHandler } from "../services/create-audit.service.js";
-import {
-  getAuditListHandler,
-  getAuditsHandler,
-  getAuditStatusHandler,
-} from "../services/audits-queries.service.js";
-import {
-  validateCreateAudit,
-  type CreateAuditInput,
-} from "../validations/create-audit.validation.js";
-import {
-  validateGetAuditListQuery,
-  type GetAuditListQuery,
-} from "../validations/audits.validation.js";
-import {
-  validateGetAuditsQuery,
-  validateGetAuditStatusQuery,
-} from "../validations/audits.validation.js";
+import {getAuditListHandler,getAuditsHandler,getAuditStatusHandler} from "../services/audits-queries.service.js";
+import {validateCreateAudit,type CreateAuditInput} from "../validations/create-audit.validation.js";
+import {validateGetAuditListQuery,type GetAuditListQuery} from "../validations/audits.validation.js";
+import {validateGetAuditsQuery,validateGetAuditStatusQuery,} from "../validations/audits.validation.js";
 import type { GraphQLContext } from "../../../graphql/context.js";
-import { getUserRole, requireUser } from "../../auth/services/authorization.service.js";
 import { prisma } from "../../../db/client.js";
 import { GraphQLError } from "graphql";
+import { getUserRole, requireUser } from "../../auth/services/authentication/authorization.service.js";
 
 export const auditsResolvers = {
   Query: {

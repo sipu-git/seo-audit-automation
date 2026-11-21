@@ -46,6 +46,7 @@ export const authTypeDefs = `#graphql
     signIn(input: SignInInput!): AuthPayload!
     signOut: Boolean!
     updateMyProfile(input: UpdateMyProfileInput!): AuthUser!
+    completeMyProfilePictureUpload(reference: String!): AuthUser!
     deleteMyAccount: Boolean!
     requestPasswordReset(email: String!): PasswordResetRequestResult!
     resetPasswordWithOtp(email: String!, code: String!, newPassword: String!): Boolean!

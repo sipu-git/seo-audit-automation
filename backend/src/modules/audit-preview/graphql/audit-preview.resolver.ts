@@ -4,7 +4,7 @@ import {
   type AuditPreviewInputArgs,
 } from "../validations/audit-preview-operation.validation.js";
 import type { GraphQLContext } from "../../../graphql/context.js";
-import { requireUser } from "../../auth/services/authorization.service.js";
+import { requireUser } from "../../auth/services/authentication/authorization.service.js";
 
 export const auditPreviewResolvers = {
   Mutation: {

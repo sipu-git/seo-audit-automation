@@ -1,6 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import type IORedis from "ioredis";
-import { getRedisClient } from "../../../shared/redis/client.js";
+import { getRedisClient } from "../../../shared/integrations/redis/client.js";
 
 const OTP_TTL_SECONDS = 5 * 60;
 const LOG_TTL_SECONDS = 30 * 24 * 60 * 60;

@@ -1,13 +1,13 @@
 import type { Request, Response } from "express";
 import { prisma } from "../db/client.js";
-import { authService } from "../modules/auth/services/auth.service.js";
+import { authService } from "../modules/auth/services/authentication/auth.service.js";
 import {
   clearAuthCookies as clearCookies,
   setAccessCookie,
   setAuthCookies as setCookies,
   verifyAccessToken,
   verifyRefreshToken,
-} from "../modules/auth/services/auth-token.service.js";
+} from "../modules/auth/services/authentication/auth-token.service.js";
 
 export type AuthenticatedUser = NonNullable<Awaited<ReturnType<typeof authService.findPublicAuthById>>>;
 

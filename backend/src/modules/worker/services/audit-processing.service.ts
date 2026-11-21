@@ -7,10 +7,8 @@ import {
   saveAuditAnalysis,
 } from "../../audits/services/audits.service";
 import type { AuditJobInput } from "../../audits/validations/audit-input.validation";
-import { RetryableGeminiError } from "../../../shared/llm-integration/index.js";
+import { RetryableGeminiError } from "../../../shared/integrations/ai/index.js";
 import { notifyAuditCompleted } from "../../notifications/audit-completed.js";
-import { generateAuditPdf } from "../../../shared/reports/pdf/generate.js";
-import { storeAuditReport } from "../../../shared/storage/reports.js";
 import { toJson } from "../../../shared/json.js";
 
 export async function processAuditJob(job: Job<AuditJobInput>) {
@@ -19,7 +17,7 @@ export async function processAuditJob(job: Job<AuditJobInput>) {
   const jobId = job.id;
   const input = job.data;
   try {
-    const auditRecord = await markAuditProcessing(jobId, input);
+    await markAuditProcessing(jobId, input);
     await job.updateProgress(10);
 
     const result = await getAuditPreview(input, (progress) => job.updateProgress(progress));
@@ -32,19 +30,8 @@ export async function processAuditJob(job: Job<AuditJobInput>) {
       note: result.note,
     });
 
-    await job.updateProgress(92);
-    const pdf = await generateAuditPdf({
-      jobId,
-      createdAt: auditRecord.createdAt,
-      business: input,
-      analysis: result.analysis,
-      dataSources: result.dataSources,
-      note: result.note,
-    });
-
     await job.updateProgress(96);
-    const reportPath = await storeAuditReport(jobId, pdf);
-    await markAuditCompleted(jobId, reportPath);
+    await markAuditCompleted(jobId);
     await notifyAuditCompleted({
       jobId,
       url: input.url,

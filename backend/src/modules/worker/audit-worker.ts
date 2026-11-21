@@ -3,8 +3,8 @@ import { UnrecoverableError, Worker } from "bullmq";
 import IORedis from "ioredis";
 import type { AuditJobInput } from "../audits/validations/audit-input.validation";
 import { SEO_AUDIT_QUEUE } from "../../shared/queue/audit-queue";
-import { closePdfBrowser } from "../../shared/reports/pdf/browser";
-import { logRedisConnection } from "../../shared/redis/log-connection.js";
+import { closePdfBrowser } from "../audit-preview/templates/pdf/browser";
+import { logRedisConnection } from "../../shared/integrations/redis/log-connection.js";
 import { processAuditJob } from "./services/audit-processing.service";
 
 export function startAuditWorker() {

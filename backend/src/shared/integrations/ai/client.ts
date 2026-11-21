@@ -1,6 +1,6 @@
-import { buildUserPrompt, SYSTEM_PROMPT } from "./prompt";
-import { parseAuditResponse } from "./response";
-import type { AuditAnalysis, AuditPreviewInput, AuditSignals } from "./types";
+import { buildUserPrompt, SYSTEM_PROMPT } from "../../../modules/audit-preview/analysis-report/prompt";
+import { parseAuditResponse } from "../../../modules/audit-preview/analysis-report/response";
+import type { AuditAnalysis, AuditPreviewInput, AuditSignals } from "../../../modules/audit-preview/analysis-report/types";
 
 export class RetryableGeminiError extends Error {
   constructor(message: string) {

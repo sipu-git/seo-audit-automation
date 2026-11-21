@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { app, startGraphqlApi } from "./app";
 import { closeAuditQueue } from "./src/shared/queue/audit-queue";
-import { closeRedisClient } from "./src/shared/redis/client";
+import { closeRedisClient } from "./src/shared/integrations/redis/client";
 import { prisma } from "./src/db/client";
 import { startAuditWorker } from "./src/modules/worker/audit-worker";
 

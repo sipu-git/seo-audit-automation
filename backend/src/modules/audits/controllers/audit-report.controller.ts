@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import { downloadAuditReport } from "../services/audit-report.service";
-import { verifyAccessToken, verifyRefreshToken, setAccessCookie, clearAuthCookies } from "../../auth/services/auth-token.service.js";
-import { authService } from "../../auth/services/auth.service.js";
-import { getUserRole } from "../../auth/services/authorization.service.js";
+import { verifyAccessToken, verifyRefreshToken, setAccessCookie, clearAuthCookies } from "../../auth/services/authentication/auth-token.service.js";
+import { authService } from "../../auth/services/authentication/auth.service.js";
 import { prisma } from "../../../db/client.js";
+import { getUserRole } from "../../auth/services/authentication/authorization.service";
 
 function readCookie(request: Request, name: string) {
   const entry = request.headers.cookie?.split(";").find((part) => part.trim().startsWith(`${name}=`));
@@ -46,11 +46,6 @@ export async function getAuditReportController(request: Request, response: Respo
       return;
     }
     response.setHeader("Cache-Control", "private, no-store");
-    if (report.kind === "redirect") {
-      response.redirect(302, report.url);
-      return;
-    }
-
     const safeJobId = request.params.jobId.replace(/[^a-zA-Z0-9_-]/g, "_");
     response.status(200).set({
       "Content-Type": "application/pdf",

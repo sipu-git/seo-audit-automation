@@ -1,13 +1,13 @@
 import { createHmac, randomInt, randomUUID } from "node:crypto";
 import { GraphQLError } from "graphql";
-import { prisma } from "../../../db/client.js";
-import { normalizeEmail } from "../validations/auth.validation.js";
+import { prisma } from "../../../../db/client.js";
+import { normalizeEmail } from "../../validations/auth.validation.js";
 import { hashPassword } from "./password.service.js";
-import { BrevoEmailError, sendPasswordResetEmail } from "./brevo-email.service.js";
+import { BrevoEmailError, sendPasswordResetEmail } from "../../templates/brevo-email.service.js";
 import {
   claimPasswordResetCode, completePasswordReset, markPasswordResetEmailFailed, markPasswordResetEmailSent,
   reservePasswordResetRequest, restorePasswordResetCode, savePendingPasswordReset
-} from "./password-reset.store.js";
+} from "../../utils/password-reset.store.js";
 
 function secret() {
   const value = process.env.PASSWORD_RESET_OTP_SECRET;

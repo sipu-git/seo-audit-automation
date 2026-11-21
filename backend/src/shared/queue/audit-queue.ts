@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 import IORedis from "ioredis";
 import type { AuditJobInput } from "../../modules/audits/validations/audit-input.validation";
-import { logRedisConnection } from "../redis/log-connection.js";
+import { logRedisConnection } from "../integrations/redis/log-connection.js";
 
 export type { AuditJobInput } from "../../modules/audits/validations/audit-input.validation";
 
