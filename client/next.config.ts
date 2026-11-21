@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         source: "/api/audits/:path*",
         destination: `${backendApiUrl}/api/audits/:path*`,
       },
+      {
+        source: "/api/profile-picture",
+        destination: `${backendApiUrl}/api/profile-picture`,
+      },
     ];
   },
   experimental: {

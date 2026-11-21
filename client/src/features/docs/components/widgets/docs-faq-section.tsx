@@ -26,7 +26,7 @@ export function DocsFaqSection() {
     {
       question: "Why is the PDF download button disabled?",
       answer:
-        "PDF downloads are unlocked as soon as the worker completes compilation and persists the document to local storage or S3. Check worker console output for any rendering logs.",
+        "PDF downloads are unlocked after the audit analysis is complete. The server generates the PDF from the template when you download it. Check worker output if the audit itself failed.",
     },
     {
       question: "Are audit checks continuously polling the server?",

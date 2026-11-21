@@ -20,11 +20,9 @@ export const environmentGroups = [
     ],
   },
   {
-    title: "PDF storage and optional integrations",
+    title: "PDF generation and optional integrations",
     values: [
-      ["AUDIT_REPORT_STORAGE", "Choose local or s3; auto-selects based on S3 configuration if omitted."],
-      ["AUDIT_REPORTS_DIR", "Optional local directory for generated PDFs."],
-      ["AWS_REGION / AWS_S3_BUCKET", "S3 location when private object storage is used."],
+      ["AWS_REGION / AWS_S3_BUCKET", "Required for private profile picture storage. Audit PDFs are generated on demand and are not stored."],
       ["AWS credentials or IAM role", "Server/worker identity used to access S3. Never expose credentials in client code."],
       ["AUDIT_COMPLETED_WEBHOOK_URL", "Optional HTTPS endpoint for completion events."],
     ],

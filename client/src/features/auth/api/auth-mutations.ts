@@ -50,6 +50,15 @@ export const UPDATE_MY_PROFILE_MUTATION = gql`
   ${AUTH_USER_FIELDS}
 `;
 
+export const COMPLETE_MY_PROFILE_PICTURE_UPLOAD_MUTATION = gql`
+  mutation CompleteMyProfilePictureUpload($reference: String!) {
+    completeMyProfilePictureUpload(reference: $reference) {
+      ...AuthUserFields
+    }
+  }
+  ${AUTH_USER_FIELDS}
+`;
+
 export const DELETE_MY_ACCOUNT_MUTATION = gql`
   mutation DeleteMyAccount {
     deleteMyAccount
@@ -96,6 +105,14 @@ export type UpdateMyProfileMutationVariables = {
     email: string;
     phone: string | null;
   };
+};
+
+export type CompleteMyProfilePictureUploadMutationData = {
+  completeMyProfilePictureUpload: import("./auth-types").AuthUser;
+};
+
+export type CompleteMyProfilePictureUploadMutationVariables = {
+  reference: string;
 };
 
 export type DeleteMyAccountMutationData = {

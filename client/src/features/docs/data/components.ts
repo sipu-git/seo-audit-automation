@@ -45,6 +45,6 @@ export const components = [
     area: "PDF and notifications",
     paths: "backend/src/lib/reports/ · backend/src/lib/storage/ · backend/src/lib/notifications/ · backend/src/lib/webhooks/",
     responsibility:
-      "Render reports as PDFs, store and serve reports from local development storage or private S3, and deliver completion messages/webhook events (mock delivery by default).",
+      "Render PDFs from the report template when requested and stream them to the client without storing PDF files; deliver completion messages/webhook events (mock delivery by default).",
   },
 ];

@@ -17,8 +17,8 @@ import {
   SidebarMenu, SidebarMenuButton, SidebarMenuItem,
   SidebarProvider, SidebarSeparator, SidebarTrigger, useSidebar,
 } from "@/components/ui/sidebar";
-import Image from "next/image";
 import { ThemeSwitcher } from "@/src/features/theme/theme-switcher";
+import { ProfilePicture } from "@/src/features/auth/components/profile-picture";
 
 const links = [
   { href: "/", label: "Client dashboard", icon: "globe" as const },
@@ -152,9 +152,12 @@ export function AppShell({
           </div>
           <SidebarSeparator className="my-3 mx-0 w-full" />
           <div className="flex min-w-0 items-center gap-2 px-1 py-1">
-            <div className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-xs font-bold text-[var(--green-dark)]">
-              {avatarInitial}
-            </div>
+            <ProfilePicture
+              src={user?.profilePicture}
+              alt={`${displayName} profile picture`}
+              fallback={avatarInitial}
+              className="size-8"
+            />
             <div className="min-w-0 group-data-[collapsible=icon]:hidden">
               <strong className="block truncate text-xs font-semibold text-[var(--ink)]">
                 {displayName}
@@ -196,12 +199,12 @@ export function AppShell({
             {user ? (
               <>
                 <div className="flex min-w-0 items-center gap-2">
-                  <div
-                    aria-hidden="true"
-                    className="grid size-8 shrink-0 place-items-center rounded-full bg-[var(--green-soft)] text-xs font-bold text-[var(--green-dark)]"
-                  >
-                    {avatarInitial}
-                  </div>
+                  <ProfilePicture
+                    src={user.profilePicture}
+                    alt={`${displayName} profile picture`}
+                    fallback={avatarInitial}
+                    className="size-8"
+                  />
                   <div className="hidden min-w-0 sm:block">
                     <strong className="block max-w-32 truncate text-xs font-semibold text-slate-700">
                       {displayName}

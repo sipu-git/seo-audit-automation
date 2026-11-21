@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { useApolloClient, useMutation } from "@apollo/client/react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { AccountDeleteDialog } from "@/src/features/auth/components/account-delete-dialog";
 import {
+  COMPLETE_MY_PROFILE_PICTURE_UPLOAD_MUTATION,
   DELETE_MY_ACCOUNT_MUTATION,
   UPDATE_MY_PROFILE_MUTATION,
+  type CompleteMyProfilePictureUploadMutationData,
+  type CompleteMyProfilePictureUploadMutationVariables,
   type DeleteMyAccountMutationData,
   type UpdateMyProfileMutationData,
   type UpdateMyProfileMutationVariables,
@@ -28,6 +31,10 @@ import {
 } from "@/components/ui/card";
 import { useAppDispatch, useAppSelector } from "@/src/shared/lib/redux-hooks";
 import { Spinner } from "@/components/ui/spinner";
+import { ProfilePicture } from "@/src/features/auth/components/profile-picture";
+
+const MAX_PROFILE_PICTURE_SIZE = 5 * 1024 * 1024;
+const PROFILE_PICTURE_TYPES = ["image/jpeg", "image/png", "image/webp"];
 
 export function ProfileOverview() {
   const user = useAppSelector((state) => state.auth.user);
@@ -41,6 +48,10 @@ export function ProfileOverview() {
   const [saveSuccess, setSaveSuccess] = useState("");
   const [deleteError, setDeleteError] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [picturePreview, setPicturePreview] = useState<string | null>(null);
+  const [pictureError, setPictureError] = useState("");
+  const [uploadingPicture, setUploadingPicture] = useState(false);
+  const pictureInputRef = useRef<HTMLInputElement>(null);
   const [updateMyProfile, { loading: saving }] = useMutation<
     UpdateMyProfileMutationData,
     UpdateMyProfileMutationVariables
@@ -48,12 +59,21 @@ export function ProfileOverview() {
   const [deleteMyAccount, { loading: deleting }] = useMutation<
     DeleteMyAccountMutationData
   >(DELETE_MY_ACCOUNT_MUTATION);
+  const [completePictureUpload] = useMutation<
+    CompleteMyProfilePictureUploadMutationData,
+    CompleteMyProfilePictureUploadMutationVariables
+  >(COMPLETE_MY_PROFILE_PICTURE_UPLOAD_MUTATION);
 
   useEffect(() => {
     setFullName(user?.fullName ?? "");
     setEmail(user?.email ?? "");
     setPhone(user?.phone ?? "");
   }, [user?.id, user?.fullName, user?.email, user?.phone]);
+
+  useEffect(() => {
+    if (!picturePreview) return;
+    return () => URL.revokeObjectURL(picturePreview);
+  }, [picturePreview]);
 
   if (!user) return null;
 
@@ -88,6 +108,56 @@ export function ProfileOverview() {
     }
   }
 
+  async function handleProfilePictureChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.currentTarget.files?.[0];
+    event.currentTarget.value = "";
+    if (!file) return;
+
+    setPictureError("");
+    setSaveSuccess("");
+    if (!PROFILE_PICTURE_TYPES.includes(file.type)) {
+      setPictureError("Choose a JPEG, PNG, or WebP image.");
+      return;
+    }
+    if (file.size > MAX_PROFILE_PICTURE_SIZE) {
+      setPictureError("The profile picture must be 5 MB or smaller.");
+      return;
+    }
+
+    setPicturePreview(URL.createObjectURL(file));
+    setUploadingPicture(true);
+    try {
+      const response = await fetch("/api/profile-picture", {
+        method: "POST",
+        headers: { "Content-Type": file.type },
+        body: file,
+      });
+      const upload = await response.json() as { reference?: string; error?: string };
+      if (!response.ok || !upload.reference) {
+        throw new Error(upload.error || "The image could not be uploaded to storage.");
+      }
+
+      const completeResult = await completePictureUpload({
+        variables: { reference: upload.reference },
+      });
+      const updatedUser = completeResult.data?.completeMyProfilePictureUpload;
+      if (!updatedUser) throw new Error("The uploaded image could not be saved to your profile.");
+
+      dispatch(setUser(updatedUser));
+      client.writeQuery<CurrentUserQueryData>({
+        query: CURRENT_USER_QUERY,
+        data: { me: updatedUser },
+      });
+      setPicturePreview(null);
+      setSaveSuccess("Your profile picture has been updated.");
+    } catch (error) {
+      setPicturePreview(null);
+      setPictureError(error instanceof Error ? error.message : "Unable to update your profile picture.");
+    } finally {
+      setUploadingPicture(false);
+    }
+  }
+
   async function handleDeleteAccount() {
     if (deleting) return;
     setDeleteError("");
@@ -118,6 +188,38 @@ export function ProfileOverview() {
           </CardDescription>
         </CardHeader>
         <CardContent>
+          <div className="mb-6 flex flex-wrap items-center gap-4 border-b border-[var(--line)] pb-5">
+            <ProfilePicture
+              src={picturePreview ?? user.profilePicture}
+              alt="Your profile picture"
+              fallback={(user.fullName || user.email || "C").charAt(0).toUpperCase()}
+              className="size-16 text-base"
+            />
+            <div className="grid gap-2">
+              <div>
+                <p className="text-sm font-medium text-[var(--ink)]">Profile picture</p>
+                <p className="mt-1 text-xs text-[var(--muted)]">JPEG, PNG, or WebP, up to 5 MB.</p>
+              </div>
+              <input
+                ref={pictureInputRef}
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                className="sr-only"
+                onChange={handleProfilePictureChange}
+                aria-label="Choose a profile picture"
+              />
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={uploadingPicture || saving || deleting}
+                onClick={() => pictureInputRef.current?.click()}
+              >
+                {uploadingPicture ? "Uploading picture…" : "Change picture"}
+              </Button>
+              {pictureError && <p role="alert" className="text-xs text-red-700">{pictureError}</p>}
+            </div>
+          </div>
           <form className="grid gap-5" onSubmit={handleProfileSubmit}>
             <div className="grid gap-4 sm:grid-cols-2">
               <label className="grid gap-1.5 text-xs font-medium text-[var(--ink)]">
@@ -165,7 +267,7 @@ export function ProfileOverview() {
             {saveSuccess && <p role="status" className="text-xs text-emerald-700">{saveSuccess}</p>}
 
             <div>
-              <Button type="submit" disabled={saving || deleting}>
+              <Button type="submit" disabled={saving || deleting || uploadingPicture}>
                 {saving ? <span className="flex gap-1 items-center"><Spinner/> Saving…</span> : "Save changes"}
               </Button>
             </div>

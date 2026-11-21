@@ -30,6 +30,12 @@ export const endpoints = [
     purpose: "Download the completed PDF; returns a not-ready response before completion.",
   },
   {
+    id: "upload-profile-picture",
+    method: "POST",
+    path: "/api/profile-picture",
+    purpose: "Upload an authenticated JPEG, PNG, or WebP profile image (raw file body, up to 5 MB) to private S3 storage.",
+  },
+  {
     id: "preview-audit",
     method: "POST",
     path: "/graphql",

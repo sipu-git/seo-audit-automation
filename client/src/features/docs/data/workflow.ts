@@ -27,10 +27,10 @@ export const workflow = [
   },
   {
     number: "04",
-    title: "Save the report",
+    title: "Prepare the report",
     description:
-      "The worker stores the score and analysis, generates a PDF, saves it to the configured report storage, and marks the database record complete. Failures are recorded against the audit.",
-    detail: "Prisma + PDF + local storage or private S3",
+      "The worker stores the score and analysis in PostgreSQL. The PDF template generates a fresh PDF when the client downloads it; PDF files are not persisted.",
+    detail: "Prisma + PDF template + on-demand download",
     icon: Database,
   },
   {
