@@ -44,6 +44,7 @@ export const authTypeDefs = `#graphql
   extend type Mutation {
     signUp(input: SignUpInput!): AuthPayload!
     signIn(input: SignInInput!): AuthPayload!
+    googleSignIn(idToken: String!): AuthPayload!
     signOut: Boolean!
     updateMyProfile(input: UpdateMyProfileInput!): AuthUser!
     completeMyProfilePictureUpload(reference: String!): AuthUser!

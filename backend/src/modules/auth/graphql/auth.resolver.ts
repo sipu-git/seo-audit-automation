@@ -1,7 +1,7 @@
 import type { GraphQLContext } from "../../../graphql/context.js";
 import {
   validateRequestPasswordResetInput, validateResetPasswordInput,
-  validateSignInInput, validateSignUpInput, validateUpdateMyProfileInput,
+  validateGoogleSignInToken, validateSignInInput, validateSignUpInput, validateUpdateMyProfileInput,
   type ResetPasswordInput, type SignInInput, type SignUpInput,
 } from "../validations/auth.validation.js";
 import { authService } from "../services/authentication/auth.service.js";
@@ -11,6 +11,7 @@ import { mediaFilesUtil } from "../utils/profile-utils/media-files.util.js";
 
 interface SignUpArgs { input: SignUpInput }
 interface SignInArgs { input: SignInInput }
+interface GoogleSignInArgs { idToken: unknown }
 
 export const authResolvers = {
   Query: {
@@ -31,6 +32,11 @@ export const authResolvers = {
     },
     signIn: async (_parent: unknown, args: SignInArgs, context: GraphQLContext) => {
       const payload = await authService.signIn(validateSignInInput(args.input));
+      context.setAuthCookies(payload.user.id);
+      return payload;
+    },
+    googleSignIn: async (_parent: unknown, args: GoogleSignInArgs, context: GraphQLContext) => {
+      const payload = await authService.signInWithGoogle(validateGoogleSignInToken(args.idToken));
       context.setAuthCookies(payload.user.id);
       return payload;
     },

@@ -1,6 +1,7 @@
 import { z } from "zod";
-import {emailSchema,fullNameSchema,internationalPhoneSchema,newPasswordSchema,optionalPhoneSchema,
-  otpCodeSchema,signInPasswordSchema,validateWithZod,
+import {
+  emailSchema, fullNameSchema, internationalPhoneSchema, newPasswordSchema, optionalPhoneSchema,
+  otpCodeSchema, signInPasswordSchema, validateWithZod,
 } from "../../../shared/validation.js";
 
 export const signUpSchema = z.object({
@@ -14,6 +15,12 @@ export const signInSchema = z.object({
   email: emailSchema,
   password: signInPasswordSchema,
 });
+
+export const googleSignInSchema = z
+  .string()
+  .trim()
+  .min(1, "Google token is required")
+  .max(8192, "Google token is too long");
 
 export const updateMyProfileSchema = z.object({
   fullName: fullNameSchema,
@@ -50,6 +57,9 @@ export function normalizePhone(value: string): string {
   return validateWithZod(internationalPhoneSchema, value);
 }
 
+export function validateGoogleSignInToken(input: unknown): string {
+  return validateWithZod(googleSignInSchema, input);
+}
 export function validateSignUpInput(input: unknown): SignUpInput {
   return validateWithZod(signUpSchema, input);
 }

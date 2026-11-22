@@ -1,0 +1,11 @@
+model Sessions{
+    id String @id @default(cuid())
+    authorId String
+    refreshToken String @unique
+    expireAt DateTime
+    revoked DateTime?
+
+    auth Auth @relation(fields: [authorId], references: [id],onDelete: Cascade)
+
+    @@index([authorId])
+}

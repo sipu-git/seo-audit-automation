@@ -17,3 +17,11 @@ export const AuditStatus = {
 } as const
 
 export type AuditStatus = (typeof AuditStatus)[keyof typeof AuditStatus]
+
+
+export const AuthProvider = {
+  GOOGLE: 'GOOGLE',
+  LOCAL: 'LOCAL'
+} as const
+
+export type AuthProvider = (typeof AuthProvider)[keyof typeof AuthProvider]

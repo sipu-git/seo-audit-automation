@@ -8,6 +8,8 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Account'
 export type * from './models/Audit'
 export type * from './models/Auth'
+export type * from './models/Sessions'
 export type * from './commonInputTypes'

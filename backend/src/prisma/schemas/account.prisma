@@ -1,0 +1,13 @@
+model Account{
+    id String @id @default(cuid())
+    authorId String @unique
+    provider AuthProvider
+    providerAccountId String 
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    auth Auth @relation(fields: [authorId], references: [id],onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+    @@index([authorId])
+}

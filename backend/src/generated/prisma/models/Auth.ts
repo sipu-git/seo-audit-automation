@@ -169,7 +169,7 @@ export type AuthGroupByOutputType = {
   id: string
   email: string
   fullName: string
-  password: string
+  password: string | null
   phone: string | null
   profilePicture: string | null
   createdAt: Date
@@ -201,24 +201,28 @@ export type AuthWhereInput = {
   id?: Prisma.StringFilter<"Auth"> | string
   email?: Prisma.StringFilter<"Auth"> | string
   fullName?: Prisma.StringFilter<"Auth"> | string
-  password?: Prisma.StringFilter<"Auth"> | string
+  password?: Prisma.StringNullableFilter<"Auth"> | string | null
   phone?: Prisma.StringNullableFilter<"Auth"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"Auth"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Auth"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Auth"> | Date | string
   audits?: Prisma.AuditListRelationFilter
+  sessions?: Prisma.SessionsListRelationFilter
+  account?: Prisma.AccountListRelationFilter
 }
 
 export type AuthOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   audits?: Prisma.AuditOrderByRelationAggregateInput
+  sessions?: Prisma.SessionsOrderByRelationAggregateInput
+  account?: Prisma.AccountOrderByRelationAggregateInput
 }
 
 export type AuthWhereUniqueInput = Prisma.AtLeast<{
@@ -228,19 +232,21 @@ export type AuthWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.AuthWhereInput[]
   NOT?: Prisma.AuthWhereInput | Prisma.AuthWhereInput[]
   fullName?: Prisma.StringFilter<"Auth"> | string
-  password?: Prisma.StringFilter<"Auth"> | string
+  password?: Prisma.StringNullableFilter<"Auth"> | string | null
   phone?: Prisma.StringNullableFilter<"Auth"> | string | null
   profilePicture?: Prisma.StringNullableFilter<"Auth"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Auth"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Auth"> | Date | string
   audits?: Prisma.AuditListRelationFilter
+  sessions?: Prisma.SessionsListRelationFilter
+  account?: Prisma.AccountListRelationFilter
 }, "id" | "email">
 
 export type AuthOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   email?: Prisma.SortOrder
   fullName?: Prisma.SortOrder
-  password?: Prisma.SortOrder
+  password?: Prisma.SortOrderInput | Prisma.SortOrder
   phone?: Prisma.SortOrderInput | Prisma.SortOrder
   profilePicture?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
@@ -257,7 +263,7 @@ export type AuthScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Auth"> | string
   email?: Prisma.StringWithAggregatesFilter<"Auth"> | string
   fullName?: Prisma.StringWithAggregatesFilter<"Auth"> | string
-  password?: Prisma.StringWithAggregatesFilter<"Auth"> | string
+  password?: Prisma.StringNullableWithAggregatesFilter<"Auth"> | string | null
   phone?: Prisma.StringNullableWithAggregatesFilter<"Auth"> | string | null
   profilePicture?: Prisma.StringNullableWithAggregatesFilter<"Auth"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Auth"> | Date | string
@@ -268,55 +274,63 @@ export type AuthCreateInput = {
   id?: string
   email: string
   fullName: string
-  password: string
+  password?: string | null
   phone?: string | null
   profilePicture?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   audits?: Prisma.AuditCreateNestedManyWithoutAuthInput
+  sessions?: Prisma.SessionsCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountCreateNestedManyWithoutAuthInput
 }
 
 export type AuthUncheckedCreateInput = {
   id?: string
   email: string
   fullName: string
-  password: string
+  password?: string | null
   phone?: string | null
   profilePicture?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   audits?: Prisma.AuditUncheckedCreateNestedManyWithoutAuthInput
+  sessions?: Prisma.SessionsUncheckedCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountUncheckedCreateNestedManyWithoutAuthInput
 }
 
 export type AuthUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   audits?: Prisma.AuditUpdateManyWithoutAuthNestedInput
+  sessions?: Prisma.SessionsUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUpdateManyWithoutAuthNestedInput
 }
 
 export type AuthUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   audits?: Prisma.AuditUncheckedUpdateManyWithoutAuthNestedInput
+  sessions?: Prisma.SessionsUncheckedUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUncheckedUpdateManyWithoutAuthNestedInput
 }
 
 export type AuthCreateManyInput = {
   id?: string
   email: string
   fullName: string
-  password: string
+  password?: string | null
   phone?: string | null
   profilePicture?: string | null
   createdAt?: Date | string
@@ -327,7 +341,7 @@ export type AuthUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -338,11 +352,16 @@ export type AuthUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type AuthScalarRelationFilter = {
+  is?: Prisma.AuthWhereInput
+  isNot?: Prisma.AuthWhereInput
 }
 
 export type AuthNullableScalarRelationFilter = {
@@ -383,6 +402,20 @@ export type AuthMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
+export type AuthCreateNestedOneWithoutAccountInput = {
+  create?: Prisma.XOR<Prisma.AuthCreateWithoutAccountInput, Prisma.AuthUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.AuthCreateOrConnectWithoutAccountInput
+  connect?: Prisma.AuthWhereUniqueInput
+}
+
+export type AuthUpdateOneRequiredWithoutAccountNestedInput = {
+  create?: Prisma.XOR<Prisma.AuthCreateWithoutAccountInput, Prisma.AuthUncheckedCreateWithoutAccountInput>
+  connectOrCreate?: Prisma.AuthCreateOrConnectWithoutAccountInput
+  upsert?: Prisma.AuthUpsertWithoutAccountInput
+  connect?: Prisma.AuthWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AuthUpdateToOneWithWhereWithoutAccountInput, Prisma.AuthUpdateWithoutAccountInput>, Prisma.AuthUncheckedUpdateWithoutAccountInput>
+}
+
 export type AuthCreateNestedOneWithoutAuditsInput = {
   create?: Prisma.XOR<Prisma.AuthCreateWithoutAuditsInput, Prisma.AuthUncheckedCreateWithoutAuditsInput>
   connectOrCreate?: Prisma.AuthCreateOrConnectWithoutAuditsInput
@@ -399,26 +432,112 @@ export type AuthUpdateOneWithoutAuditsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.AuthUpdateToOneWithWhereWithoutAuditsInput, Prisma.AuthUpdateWithoutAuditsInput>, Prisma.AuthUncheckedUpdateWithoutAuditsInput>
 }
 
-export type AuthCreateWithoutAuditsInput = {
+export type AuthCreateNestedOneWithoutSessionsInput = {
+  create?: Prisma.XOR<Prisma.AuthCreateWithoutSessionsInput, Prisma.AuthUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.AuthCreateOrConnectWithoutSessionsInput
+  connect?: Prisma.AuthWhereUniqueInput
+}
+
+export type AuthUpdateOneRequiredWithoutSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.AuthCreateWithoutSessionsInput, Prisma.AuthUncheckedCreateWithoutSessionsInput>
+  connectOrCreate?: Prisma.AuthCreateOrConnectWithoutSessionsInput
+  upsert?: Prisma.AuthUpsertWithoutSessionsInput
+  connect?: Prisma.AuthWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.AuthUpdateToOneWithWhereWithoutSessionsInput, Prisma.AuthUpdateWithoutSessionsInput>, Prisma.AuthUncheckedUpdateWithoutSessionsInput>
+}
+
+export type AuthCreateWithoutAccountInput = {
   id?: string
   email: string
   fullName: string
-  password: string
+  password?: string | null
   phone?: string | null
   profilePicture?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  audits?: Prisma.AuditCreateNestedManyWithoutAuthInput
+  sessions?: Prisma.SessionsCreateNestedManyWithoutAuthInput
+}
+
+export type AuthUncheckedCreateWithoutAccountInput = {
+  id?: string
+  email: string
+  fullName: string
+  password?: string | null
+  phone?: string | null
+  profilePicture?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  audits?: Prisma.AuditUncheckedCreateNestedManyWithoutAuthInput
+  sessions?: Prisma.SessionsUncheckedCreateNestedManyWithoutAuthInput
+}
+
+export type AuthCreateOrConnectWithoutAccountInput = {
+  where: Prisma.AuthWhereUniqueInput
+  create: Prisma.XOR<Prisma.AuthCreateWithoutAccountInput, Prisma.AuthUncheckedCreateWithoutAccountInput>
+}
+
+export type AuthUpsertWithoutAccountInput = {
+  update: Prisma.XOR<Prisma.AuthUpdateWithoutAccountInput, Prisma.AuthUncheckedUpdateWithoutAccountInput>
+  create: Prisma.XOR<Prisma.AuthCreateWithoutAccountInput, Prisma.AuthUncheckedCreateWithoutAccountInput>
+  where?: Prisma.AuthWhereInput
+}
+
+export type AuthUpdateToOneWithWhereWithoutAccountInput = {
+  where?: Prisma.AuthWhereInput
+  data: Prisma.XOR<Prisma.AuthUpdateWithoutAccountInput, Prisma.AuthUncheckedUpdateWithoutAccountInput>
+}
+
+export type AuthUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.AuditUpdateManyWithoutAuthNestedInput
+  sessions?: Prisma.SessionsUpdateManyWithoutAuthNestedInput
+}
+
+export type AuthUncheckedUpdateWithoutAccountInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.AuditUncheckedUpdateManyWithoutAuthNestedInput
+  sessions?: Prisma.SessionsUncheckedUpdateManyWithoutAuthNestedInput
+}
+
+export type AuthCreateWithoutAuditsInput = {
+  id?: string
+  email: string
+  fullName: string
+  password?: string | null
+  phone?: string | null
+  profilePicture?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  sessions?: Prisma.SessionsCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountCreateNestedManyWithoutAuthInput
 }
 
 export type AuthUncheckedCreateWithoutAuditsInput = {
   id?: string
   email: string
   fullName: string
-  password: string
+  password?: string | null
   phone?: string | null
   profilePicture?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  sessions?: Prisma.SessionsUncheckedCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountUncheckedCreateNestedManyWithoutAuthInput
 }
 
 export type AuthCreateOrConnectWithoutAuditsInput = {
@@ -441,22 +560,94 @@ export type AuthUpdateWithoutAuditsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionsUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUpdateManyWithoutAuthNestedInput
 }
 
 export type AuthUncheckedUpdateWithoutAuditsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.StringFieldUpdateOperationsInput | string
   fullName?: Prisma.StringFieldUpdateOperationsInput | string
-  password?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sessions?: Prisma.SessionsUncheckedUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUncheckedUpdateManyWithoutAuthNestedInput
+}
+
+export type AuthCreateWithoutSessionsInput = {
+  id?: string
+  email: string
+  fullName: string
+  password?: string | null
+  phone?: string | null
+  profilePicture?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  audits?: Prisma.AuditCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountCreateNestedManyWithoutAuthInput
+}
+
+export type AuthUncheckedCreateWithoutSessionsInput = {
+  id?: string
+  email: string
+  fullName: string
+  password?: string | null
+  phone?: string | null
+  profilePicture?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  audits?: Prisma.AuditUncheckedCreateNestedManyWithoutAuthInput
+  account?: Prisma.AccountUncheckedCreateNestedManyWithoutAuthInput
+}
+
+export type AuthCreateOrConnectWithoutSessionsInput = {
+  where: Prisma.AuthWhereUniqueInput
+  create: Prisma.XOR<Prisma.AuthCreateWithoutSessionsInput, Prisma.AuthUncheckedCreateWithoutSessionsInput>
+}
+
+export type AuthUpsertWithoutSessionsInput = {
+  update: Prisma.XOR<Prisma.AuthUpdateWithoutSessionsInput, Prisma.AuthUncheckedUpdateWithoutSessionsInput>
+  create: Prisma.XOR<Prisma.AuthCreateWithoutSessionsInput, Prisma.AuthUncheckedCreateWithoutSessionsInput>
+  where?: Prisma.AuthWhereInput
+}
+
+export type AuthUpdateToOneWithWhereWithoutSessionsInput = {
+  where?: Prisma.AuthWhereInput
+  data: Prisma.XOR<Prisma.AuthUpdateWithoutSessionsInput, Prisma.AuthUncheckedUpdateWithoutSessionsInput>
+}
+
+export type AuthUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.AuditUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUpdateManyWithoutAuthNestedInput
+}
+
+export type AuthUncheckedUpdateWithoutSessionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  fullName?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  profilePicture?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  audits?: Prisma.AuditUncheckedUpdateManyWithoutAuthNestedInput
+  account?: Prisma.AccountUncheckedUpdateManyWithoutAuthNestedInput
 }
 
 
@@ -466,10 +657,14 @@ export type AuthUncheckedUpdateWithoutAuditsInput = {
 
 export type AuthCountOutputType = {
   audits: number
+  sessions: number
+  account: number
 }
 
 export type AuthCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audits?: boolean | AuthCountOutputTypeCountAuditsArgs
+  sessions?: boolean | AuthCountOutputTypeCountSessionsArgs
+  account?: boolean | AuthCountOutputTypeCountAccountArgs
 }
 
 /**
@@ -489,6 +684,20 @@ export type AuthCountOutputTypeCountAuditsArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.AuditWhereInput
 }
 
+/**
+ * AuthCountOutputType without action
+ */
+export type AuthCountOutputTypeCountSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.SessionsWhereInput
+}
+
+/**
+ * AuthCountOutputType without action
+ */
+export type AuthCountOutputTypeCountAccountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AccountWhereInput
+}
+
 
 export type AuthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -500,6 +709,8 @@ export type AuthSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   createdAt?: boolean
   updatedAt?: boolean
   audits?: boolean | Prisma.Auth$auditsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Auth$sessionsArgs<ExtArgs>
+  account?: boolean | Prisma.Auth$accountArgs<ExtArgs>
   _count?: boolean | Prisma.AuthCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["auth"]>
 
@@ -539,6 +750,8 @@ export type AuthSelectScalar = {
 export type AuthOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "fullName" | "password" | "phone" | "profilePicture" | "createdAt" | "updatedAt", ExtArgs["result"]["auth"]>
 export type AuthInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   audits?: boolean | Prisma.Auth$auditsArgs<ExtArgs>
+  sessions?: boolean | Prisma.Auth$sessionsArgs<ExtArgs>
+  account?: boolean | Prisma.Auth$accountArgs<ExtArgs>
   _count?: boolean | Prisma.AuthCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type AuthIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -548,12 +761,14 @@ export type $AuthPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   name: "Auth"
   objects: {
     audits: Prisma.$AuditPayload<ExtArgs>[]
+    sessions: Prisma.$SessionsPayload<ExtArgs>[]
+    account: Prisma.$AccountPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     email: string
     fullName: string
-    password: string
+    password: string | null
     phone: string | null
     profilePicture: string | null
     createdAt: Date
@@ -953,6 +1168,8 @@ readonly fields: AuthFieldRefs;
 export interface Prisma__AuthClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   audits<T extends Prisma.Auth$auditsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auth$auditsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sessions<T extends Prisma.Auth$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auth$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SessionsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  account<T extends Prisma.Auth$accountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Auth$accountArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1399,6 +1616,54 @@ export type Auth$auditsArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.AuditScalarFieldEnum | Prisma.AuditScalarFieldEnum[]
+}
+
+/**
+ * Auth.sessions
+ */
+export type Auth$sessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Sessions
+   */
+  select?: Prisma.SessionsSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Sessions
+   */
+  omit?: Prisma.SessionsOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SessionsInclude<ExtArgs> | null
+  where?: Prisma.SessionsWhereInput
+  orderBy?: Prisma.SessionsOrderByWithRelationInput | Prisma.SessionsOrderByWithRelationInput[]
+  cursor?: Prisma.SessionsWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.SessionsScalarFieldEnum | Prisma.SessionsScalarFieldEnum[]
+}
+
+/**
+ * Auth.account
+ */
+export type Auth$accountArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Account
+   */
+  select?: Prisma.AccountSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Account
+   */
+  omit?: Prisma.AccountOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccountInclude<ExtArgs> | null
+  where?: Prisma.AccountWhereInput
+  orderBy?: Prisma.AccountOrderByWithRelationInput | Prisma.AccountOrderByWithRelationInput[]
+  cursor?: Prisma.AccountWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AccountScalarFieldEnum | Prisma.AccountScalarFieldEnum[]
 }
 
 /**
