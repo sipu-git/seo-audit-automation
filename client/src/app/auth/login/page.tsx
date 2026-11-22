@@ -19,7 +19,7 @@ import { useAppDispatch } from "@/src/shared/lib/redux-hooks";
 import { useAuthReturnNavigation } from "@/src/features/auth/hooks/use-auth-return-navigation";
 import { useState } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import Divider from "@/components/ui/divider";
+import { GoogleSignInButton } from "@/src/features/auth/components/google-sign-in-button";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -73,6 +73,7 @@ export default function LoginPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        <GoogleSignInButton onSuccess={() => router.replace(returnPath)} />
         <Form {...form}>
           <form
             className="grid gap-4"
@@ -144,7 +145,6 @@ export default function LoginPage() {
             </Button>
           </form>
         </Form>
-        <Divider variant="solid" thickness={0.2} color="#ccd2d1" className="my-8">OR</Divider>
         <div className="flex flex-wrap justify-between gap-2 text-sm">
           <Link
             className="font-medium text-emerald-700 hover:underline"

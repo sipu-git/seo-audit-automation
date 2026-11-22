@@ -24,6 +24,7 @@ export type AuthFormProps = {
   submitting: boolean;
   onSubmit: SubmitHandler<AuthFormValues>;
   onSwitch: (mode: AuthFormMode) => void;
+  onGoogleSuccess?: () => void;
 };
 
 type AuthFieldName = "fullName" | "email" | "phone" | "code" | "password";

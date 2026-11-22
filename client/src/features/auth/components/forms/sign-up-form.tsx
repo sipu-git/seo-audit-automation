@@ -1,9 +1,10 @@
 "use client";
 
 import type { AuthFormProps } from "@/src/features/auth/components/forms/auth-form-fields";
-import {AuthFormError,AuthSubmitButton,EmailField,FullNameField,PasswordField,PhoneField,} from "@/src/features/auth/components/forms/auth-form-fields";
+import { AuthFormError, AuthSubmitButton, EmailField, FullNameField, PasswordField, PhoneField, } from "@/src/features/auth/components/forms/auth-form-fields";
+import { GoogleSignInButton } from "@/src/features/auth/components/google-sign-in-button";
 
-export function SignUpForm({ form, feedback, submitting, onSubmit, onSwitch }: AuthFormProps) {
+export function SignUpForm({ form, feedback, submitting, onSubmit, onSwitch, onGoogleSuccess }: AuthFormProps) {
   return (
     <>
       <form className="grid gap-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -14,7 +15,8 @@ export function SignUpForm({ form, feedback, submitting, onSubmit, onSwitch }: A
         <AuthFormError form={form} />
         <AuthSubmitButton submitting={submitting} label="Create account" />
       </form>
-      <div className="flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-4 text-sm">
+      <GoogleSignInButton onSuccess={onGoogleSuccess} />
+      <div className="flex flex-wrap items-center justify-between gap-2 pt-4 text-sm">
         <button
           type="button"
           className="text-slate-600 hover:text-slate-900"

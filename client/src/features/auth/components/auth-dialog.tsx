@@ -147,6 +147,7 @@ export function AuthDialog({ open, onOpenChange, initialMode = "sign-in" }: {
       submitting,
       onSubmit: submit,
       onSwitch: changeMode,
+      onGoogleSuccess: close,
     };
 
     switch (currentMode) {

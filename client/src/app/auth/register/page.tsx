@@ -35,6 +35,7 @@ import { useAuthReturnNavigation } from "@/src/features/auth/hooks/use-auth-retu
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Spinner } from "@/components/ui/spinner";
+import { GoogleSignInButton } from "@/src/features/auth/components/google-sign-in-button";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -91,6 +92,7 @@ export default function RegisterPage() {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        <GoogleSignInButton onSuccess={() => router.replace(returnPath)} />
         <Form {...form}>
           <form
             className="grid gap-4"
@@ -194,7 +196,7 @@ export default function RegisterPage() {
               </p>
             )}
             <Button className="w-full" type="submit" disabled={loading}>
-              {loading ? <span className="inline-flex gap-2 items-center"><Spinner />Please wait…</span> : "Sign in"}
+              {loading ? <span className="inline-flex gap-2 items-center"><Spinner />Please wait…</span> : "Create account"}
             </Button>
           </form>
         </Form>

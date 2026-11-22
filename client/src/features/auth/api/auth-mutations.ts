@@ -24,6 +24,17 @@ export const SIGN_IN_MUTATION = gql`
   ${AUTH_USER_FIELDS}
 `;
 
+export const GOOGLE_SIGN_IN_MUTATION = gql`
+  mutation GoogleSignIn($idToken: String!) {
+    googleSignIn(idToken: $idToken) {
+      user {
+        ...AuthUserFields
+      }
+    }
+  }
+  ${AUTH_USER_FIELDS}
+`;
+
 export const SIGN_UP_MUTATION = gql`
   mutation SignUp($input: SignUpInput!) {
     signUp(input: $input) {
@@ -89,6 +100,10 @@ export const RESET_PASSWORD_WITH_OTP_MUTATION = gql`
 
 export type SignInMutationData = {
   signIn: import("./auth-types").AuthPayload;
+};
+
+export type GoogleSignInMutationData = {
+  googleSignIn: import("./auth-types").AuthPayload;
 };
 
 export type SignUpMutationData = {
